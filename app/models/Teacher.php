@@ -2,9 +2,6 @@
 
 namespace App\models;
 
-use App\database\Database;
-use PDO;
-
 class Teacher extends Person
 {  
   public string $formation;
@@ -17,18 +14,5 @@ class Teacher extends Person
 
   public function store()
   {
-    $database = new Database('teachers');
-    $this->id = $database->insert([
-      'id' => $this->id,
-      'registry' => $this->registry,
-      'name' => $this->name,
-      'birthDate' => $this->birthDate,
-      'document' => $this->document,
-      'email' => $this->email,
-      'password' => $this->password,
-      'formation' => $this->formation,
-    ]);
-
-    return $this->id;
   }
 }
