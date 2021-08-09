@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  mysql:
+    image: mysql:5.7.34
+    environment:
+      MYSQL_ROOT_PASSWORD: "root123"
+      MYSQL_DATABASE: "gestao-escolar-php"
+    ports:
+      - "3306:3306"
