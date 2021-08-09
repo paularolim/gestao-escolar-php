@@ -2,8 +2,8 @@
 
 require __DIR__ . '/vendor/autoload.php';
 
-use App\controllers\HomeController;
-use App\controllers\TeachersController;
+use App\Controllers\HomeController;
+use App\Controllers\TeachersController;
 
 // echo HomeController::getHome();
 echo TeachersController::getDashboard();
