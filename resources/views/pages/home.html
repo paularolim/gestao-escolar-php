@@ -46,13 +46,14 @@
           <div class="w3-container w3-cyan w3-margin-bottom">
             <h2>Professores</h2>
           </div>
-          <form action="" method="post" class="w3-padding">
+          <form action="/professores" method="post" class="w3-padding">
             <label for="email">Email</label>
             <input
               type="text"
               name="email"
               placeholder="exemplo@mail.com"
               class="w3-input w3-border w3-border-cyan"
+              required
             />
 
             <label for="password">Senha</label>
@@ -62,6 +63,7 @@
               id=""
               placeholder="********"
               class="w3-input w3-border w3-border-cyan"
+              required
             />
             <input
               type="button"
