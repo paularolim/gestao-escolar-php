@@ -6,6 +6,7 @@
     }
   },
   "require": {
-    "ramsey/uuid": "^4.1"
+    "ramsey/uuid": "^4.1",
+    "symfony/dotenv": "^5.3"
   }
 }
