@@ -4,14 +4,16 @@ namespace App\Http;
 
 class Request
 {
+  private Router $router;
   private string $httpMethod;
   private string $uri;
   private array $queryParams = [];
   private array $postVars = [];
   private array $headers = [];
 
-  public function __construct()
+  public function __construct($router)
   {
+    $this->router = $router;
     $this->queryParams = $_GET ?? [];
     $this->postVars = $_POST ?? [];
     $this->headers = getallheaders();
@@ -42,5 +44,10 @@ class Request
   public function getHeaders(): array
   {
     return $this->headers;
+  }
+
+  public function getRouter(): Router
+  {
+    return $this->router;
   }
 }

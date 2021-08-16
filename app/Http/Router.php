@@ -5,6 +5,7 @@ namespace App\Http;
 use Closure;
 use Exception;
 use ReflectionFunction;
+use \App\Http\Middlewares\Queue as MiddlewareQueue;
 
 class Router
 {
@@ -15,7 +16,7 @@ class Router
 
   public function __construct(string $url)
   {
-    $this->request = new Request();
+    $this->request = new Request($this);
     $this->url = $url;
   }
 
@@ -28,6 +29,8 @@ class Router
         continue;
       }
     }
+
+    $params['middlewares'] = $params['middlewares'] ?? [];
 
     $params['variables'] = [];
     $patternVariables = '/{(.*?)}/';
@@ -61,7 +64,7 @@ class Router
           $keys = $method[$httpMethod]['variables'];
           $method[$httpMethod]['variables'] = array_combine($keys, $matches);
           $method[$httpMethod]['variables']['request'] = $this->request;
-          
+
           return $method[$httpMethod];
         }
 
@@ -87,17 +90,30 @@ class Router
       foreach ($reflection->getParameters() as $parameter) {
         $name = $parameter->getName();
         $args[$name] = $route['variables'][$name] ?? '';
-
       }
 
-      return call_user_func_array($route['controller'], $args);
+      return (new MiddlewareQueue($route['middlewares'], $route['controller'], $args))->next($this->request);
     } catch (Exception $e) {
       return new Response($e->getMessage(), $e->getCode());
     }
   }
 
+  // redirect url
+  public function redirect(string $route): void
+  {
+    $url = $this->url . $route;
+
+    header('Location: ' . $url);
+    exit;
+  }
+
   public function get(string $route, array $params = [])
   {
     return $this->addRoute('GET', $route, $params);
+  }
+
+  public function post(string $route, array $params = [])
+  {
+    return $this->addRoute('POST', $route, $params);
   }
 }

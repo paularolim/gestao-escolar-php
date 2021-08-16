@@ -6,8 +6,14 @@ use App\Utils\View;
 
 class HomeController
 {
-  public static function getHome(): string
+  public static function getHome(string $errorTeacher = null): string
   {
-    return View::render('pages/home');
+    $messageTeacher = !is_null($errorTeacher) ? View::render('components/message-error', [
+      'message' => $errorTeacher
+    ]) : '';
+
+    return View::render('pages/home', [
+      'messageTeacher' => $messageTeacher
+    ]);
   }
 }

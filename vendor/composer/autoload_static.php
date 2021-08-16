@@ -4,9 +4,10 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit33091cb7a54128887b3c4195844bad4d
+class ComposerStaticInit2fd79b34f1d9455c00c5fefb63e8d037
 {
     public static $files = array (
+        '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         'e39a8b23c42d4e1452234d762b03835a' => __DIR__ . '/..' . '/ramsey/uuid/src/functions.php',
     );
@@ -15,6 +16,7 @@ class ComposerStaticInit33091cb7a54128887b3c4195844bad4d
         'S' => 
         array (
             'Symfony\\Polyfill\\Ctype\\' => 23,
+            'Symfony\\Component\\Dotenv\\' => 25,
         ),
         'R' => 
         array (
@@ -35,6 +37,10 @@ class ComposerStaticInit33091cb7a54128887b3c4195844bad4d
         'Symfony\\Polyfill\\Ctype\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
+        ),
+        'Symfony\\Component\\Dotenv\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/dotenv',
         ),
         'Ramsey\\Uuid\\' => 
         array (
@@ -61,9 +67,9 @@ class ComposerStaticInit33091cb7a54128887b3c4195844bad4d
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit33091cb7a54128887b3c4195844bad4d::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit33091cb7a54128887b3c4195844bad4d::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit33091cb7a54128887b3c4195844bad4d::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit2fd79b34f1d9455c00c5fefb63e8d037::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit2fd79b34f1d9455c00c5fefb63e8d037::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit2fd79b34f1d9455c00c5fefb63e8d037::$classMap;
 
         }, null, ClassLoader::class);
     }

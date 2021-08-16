@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Symfony\\Polyfill\\Ctype\\' => array($vendorDir . '/symfony/polyfill-ctype'),
+    'Symfony\\Component\\Dotenv\\' => array($vendorDir . '/symfony/dotenv'),
     'Ramsey\\Uuid\\' => array($vendorDir . '/ramsey/uuid/src'),
     'Ramsey\\Collection\\' => array($vendorDir . '/ramsey/collection/src'),
     'Brick\\Math\\' => array($vendorDir . '/brick/math/src'),

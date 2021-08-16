@@ -1,7 +1,9 @@
 <?php
 
-namespace App\models;
+namespace App\Models;
 
+use App\Database\Database;
+use PDO;
 use Ramsey\Uuid\Uuid;
 
 abstract class Person
@@ -24,6 +26,8 @@ abstract class Person
     $this->email = $email;
     $this->password = $password;
   }
+
+  public abstract static function getByDocument(string $document);
 
   public function login(): void
   {

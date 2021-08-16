@@ -46,12 +46,13 @@
           <div class="w3-container w3-cyan w3-margin-bottom">
             <h2>Professores</h2>
           </div>
-          <form action="/professores" method="post" class="w3-padding">
-            <label for="email">Email</label>
+          {{messageTeacher}}
+          <form action="/professores/login" method="post" class="w3-padding">
+            <label for="document">CPF</label>
             <input
               type="text"
-              name="email"
-              placeholder="exemplo@mail.com"
+              name="document"
+              placeholder="12345678910"
               class="w3-input w3-border w3-border-cyan"
               required
             />
@@ -66,7 +67,6 @@
               required
             />
             <input
-              type="button"
               type="submit"
               value="Entrar"
               class="w3-btn w3-cyan w3-margin-top"

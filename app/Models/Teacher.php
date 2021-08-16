@@ -1,15 +1,20 @@
 <?php
 
-namespace App\models;
+namespace App\Models;
+
+use App\Database\Database;
 
 class Teacher extends Person
-{  
+{
   public string $formation;
 
-  public function __construct(string $registry, string $name, string $birthDate, string $document, string $email, string $password, string $formation)
+  public function __construct()
   {
-    parent::__construct($registry, $name, $birthDate, $document, $email, $password);
-    $this->formation = $formation;
+  }
+
+  public static function getByDocument(string $document)
+  {
+    return (new Database('teachers'))->select('*', 'document = "' . $document . '"')->fetchObject(self::class);
   }
 
   public function store()
