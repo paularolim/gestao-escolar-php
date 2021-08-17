@@ -4,17 +4,17 @@
 namespace App\Controllers;
 
 use App\Http\Request;
-use App\Models\Teacher;
-use App\Sessions\TeacherSession;
 use App\Utils\View;
+use App\Models\Employee;
+use App\Sessions\EmployeeSession;
 
-class TeachersController
+class EmployeesController
 {
-  const TABLE = 'teachers';
+  const TABLE = 'employee';
 
   public static function getDashboard(): string
   {
-    $content = View::render('pages/dashboard-teachers');
+    $content = View::render('pages/dashboard-employee');
     return LayoutController::getLayout(self::TABLE, 'Gestão Escolar - Dashboard', $content);
   }
 
@@ -26,24 +26,24 @@ class TeachersController
     $password = $postVars['password'] ?? '';
 
     // search by document
-    $person = Teacher::getByDocument($document);
+    $person = Employee::getByDocument($document);
 
     // if document is wrong
-    if (!$person instanceof Teacher)
-      return HomeController::getHome('teacher', 'Documento ou senha inválidos');
+    if (!$person instanceof Employee)
+      return HomeController::getHome('employee', 'Documento ou senha inválidos');
 
     if (!password_verify($password, $person->password))
-      return HomeController::getHome('teacher', 'Documento ou senha inválidos');
+      return HomeController::getHome('employee', 'Documento ou senha inválidos');
 
-    TeacherSession::login($person);
+    EmployeeSession::login($person);
 
-    // redirect to teacher home if login success
-    $request->getRouter()->redirect('/professores');
+    // redirect to employee home if login success
+    $request->getRouter()->redirect('/funcionarios');
   }
 
   public static function setLogout(Request $request)
   {
-    TeacherSession::logout();
+    EmployeeSession::logout();
 
     $request->getRouter()->redirect('/');
   }

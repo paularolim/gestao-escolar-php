@@ -19,10 +19,12 @@ $router = new Router(URL);
 
 MiddlewareQueue::setMap([
   'requiredTeacherLogin' => \App\Http\Middlewares\RequiredTeacherLogin::class,
+  'requiredEmployeeLogin' => \App\Http\Middlewares\RequiredEmployeeLogin::class,
   'requiredLogout' => \App\Http\Middlewares\RequiredLogout::class
 ]);
 
 include __DIR__ . '/routes/external.php';
 include __DIR__ . '/routes/teachers.php';
+include __DIR__ . '/routes/employeeRoutes.php';
 
 $router->run()->sendResponse();

@@ -8,7 +8,11 @@ class LayoutController
 {
   private static function getHeader(string $profile): string
   {
-    return View::render('layouts/header-' . $profile);
+    $user = $_SESSION[$profile];
+
+    return View::render('layouts/header-' . $profile, [
+      'name' => $user['name'] ?? 'Nome'
+    ]);
   }
 
   public static function getLayout(string $profile, string $title, string $content)
