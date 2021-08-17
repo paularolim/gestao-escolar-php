@@ -15,7 +15,7 @@ class TeachersController
   public static function getDashboard(): string
   {
     $content = View::render('pages/dashboard-teachers');
-    return LayoutController::getLayout(self::TABLE, 'Gestão Escolar - Dashboard', $content);
+    return LayoutController::getLayout('teacher', 'Gestão Escolar - Dashboard', $content);
   }
 
   public static function setLogin(Request $request)
