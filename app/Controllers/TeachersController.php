@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Controllers;
 
 use App\Http\Request;
@@ -10,8 +9,6 @@ use App\Utils\View;
 
 class TeachersController
 {
-  const TABLE = 'teachers';
-
   public static function getDashboard(): string
   {
     $content = View::render('pages/dashboard-teachers');

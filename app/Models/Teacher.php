@@ -6,6 +6,8 @@ use App\Database\Database;
 
 class Teacher extends Person
 {
+  private static string $table = 'teachers';
+
   public string $formation;
 
   public function __construct()
@@ -14,10 +16,6 @@ class Teacher extends Person
 
   public static function getByDocument(string $document)
   {
-    return (new Database('teachers'))->select('*', 'document = "' . $document . '"')->fetchObject(self::class);
-  }
-
-  public function store()
-  {
+    return (new Database(self::$table))->select('*', 'document = "' . $document . '"')->fetchObject(self::class);
   }
 }
