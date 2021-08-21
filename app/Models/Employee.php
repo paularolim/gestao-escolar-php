@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Database\Database;
+use PDO;
 
 class Employee extends Person
 {
@@ -15,5 +16,10 @@ class Employee extends Person
   public static function getByDocument(string $document)
   {
     return (new Database(self::$table))->select('*', 'document = "' . $document . '"')->fetchObject(self::class);
+  }
+
+  public static function getAll(): array
+  {
+    return (new Database(self::$table))->select('name')->fetchAll(PDO::FETCH_ASSOC);
   }
 }

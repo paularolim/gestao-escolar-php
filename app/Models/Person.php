@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use PDOStatement;
 use Ramsey\Uuid\Uuid;
 
 abstract class Person
@@ -24,4 +25,5 @@ abstract class Person
   }
 
   public abstract static function getByDocument(string $document);
+  public abstract static function getAll(): PDOStatement;
 }

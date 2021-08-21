@@ -11,6 +11,9 @@ $router->post('/funcionarios/login', [
 ]);
 
 $router->get('/funcionarios/logout', [
+  'middlewares' => [
+    'requiredEmployeeLogin'
+  ],
   function (Request $request) {
     return new Response(EmployeesController::setLogout($request));
   }
@@ -22,5 +25,14 @@ $router->get('/funcionarios', [
   ],
   function () {
     return new Response(EmployeesController::getDashboard());
+  }
+]);
+
+$router->get('/funcionarios/professores', [
+  'middlewares' => [
+    'requiredEmployeeLogin'
+  ],
+  function () {
+    return new Response(EmployeesController::getTeachers());
   }
 ]);

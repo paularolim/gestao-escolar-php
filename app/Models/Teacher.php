@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Database\Database;
+use PDO;
+use PDOStatement;
 
 class Teacher extends Person
 {
@@ -17,5 +19,10 @@ class Teacher extends Person
   public static function getByDocument(string $document)
   {
     return (new Database(self::$table))->select('*', 'document = "' . $document . '"')->fetchObject(self::class);
+  }
+
+  public static function getAll(): PDOStatement
+  {
+    return (new Database(self::$table))->select('name, formation');
   }
 }

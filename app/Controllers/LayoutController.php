@@ -6,6 +6,8 @@ use App\Utils\View;
 
 class LayoutController
 {
+  const TITLE = 'Gestão Escolar - ';
+
   private static function getHeader(string $profile): string
   {
     $user = $_SESSION[$profile];
@@ -18,7 +20,7 @@ class LayoutController
   public static function getLayout(string $profile, string $title, string $content)
   {
     return View::render('layouts/layout', [
-      'title' => $title,
+      'title' => self::TITLE . $title,
       'header' => self::getHeader($profile),
       'content' => $content
     ]);

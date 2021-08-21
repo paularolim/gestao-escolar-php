@@ -6,14 +6,41 @@ namespace App\Controllers;
 use App\Http\Request;
 use App\Utils\View;
 use App\Models\Employee;
+use App\Models\Teacher;
 use App\Sessions\EmployeeSession;
 
 class EmployeesController
 {
+  const PROFILE = 'employee';
+
   public static function getDashboard(): string
   {
     $content = View::render('pages/dashboard-employee');
-    return LayoutController::getLayout('employee', 'Gestão Escolar - Dashboard', $content);
+    return LayoutController::getLayout(self::PROFILE, 'Dashboard', $content);
+  }
+
+  public static function getTeachersRows(): string
+  {
+    $teachers = Teacher::getAll();
+
+    $rows = '';
+    while ($teacher = $teachers->fetchObject(Teacher::class)) {
+      $rows .= View::render('components/table-tr-teachers', [
+        'id' => $teacher->id,
+        'name' => $teacher->name,
+        'formation' => $teacher->formation
+      ]);
+    }
+
+    return $rows;
+  }
+
+  public static function getTeachers(): string
+  {
+    $content = View::render('pages/list-teachers', [
+      'rows' => self::getTeachersRows()
+    ]);
+    return LayoutController::getLayout(self::PROFILE, 'Professores', $content);
   }
 
   public static function setLogin(Request $request)
