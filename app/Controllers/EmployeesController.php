@@ -19,16 +19,17 @@ class EmployeesController
     return LayoutController::getLayout(self::PROFILE, 'Dashboard', $content);
   }
 
-  public static function getTeachersRows(): string
+  private static function getTeachersRows(): string
   {
     $teachers = Teacher::getAll();
 
+    
     $rows = '';
-    while ($teacher = $teachers->fetchObject(Teacher::class)) {
-      $rows .= View::render('components/table-tr-teachers', [
-        'id' => $teacher->id,
-        'name' => $teacher->name,
-        'formation' => $teacher->formation
+    foreach ($teachers as $teacher) {
+      $rows .= View::render('pages/employee/components/table-tr-teachers', [
+        'id' => $teacher['id'],
+        'name' => $teacher['name'],
+        'formation' => $teacher['formation']
       ]);
     }
 
@@ -37,10 +38,38 @@ class EmployeesController
 
   public static function getTeachers(): string
   {
-    $content = View::render('pages/list-teachers', [
+    $content = View::render('pages/employee/list-teachers', [
       'rows' => self::getTeachersRows()
     ]);
     return LayoutController::getLayout(self::PROFILE, 'Professores', $content);
+  }
+
+  public static function getAddTeacher(): string
+  {
+    $content = View::render('pages/employee/add-teacher');
+    return LayoutController::getLayout(self::PROFILE, 'Professores', $content);
+  }
+
+  public static function setAddTeacher(Request $request): void
+  {
+    echo '<pre>';
+    print_r($request->getPostVars());
+    echo '</pre>';
+    $postVars = $request->getPostVars();
+
+    $name = $postVars['name'] ?? '';
+    $birthDate = $postVars['birthDate'] ?? '';
+    $document = $postVars['document'] ?? '';
+    $email = $postVars['email'] ?? '';
+    $formation = $postVars['formation'] ?? '';
+
+    $teacher = new Teacher($name, $birthDate, $document, $email, $formation);
+
+    try {
+      $teacher->store();
+    } catch (\Error $error) {
+      $request->getRouter()->redirect('/funcionarios/professores/adicionar');
+    }
   }
 
   public static function setLogin(Request $request)

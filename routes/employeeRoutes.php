@@ -36,3 +36,21 @@ $router->get('/funcionarios/professores', [
     return new Response(EmployeesController::getTeachers());
   }
 ]);
+
+$router->get('/funcionarios/professores/adicionar', [
+  'middlewares' => [
+    'requiredEmployeeLogin'
+  ],
+  function () {
+    return new Response(EmployeesController::getAddTeacher());
+  }
+]);
+
+$router->post('/funcionarios/professores/adicionar', [
+  'middlewares' => [
+    'requiredEmployeeLogin'
+  ],
+  function (Request $request) {
+    return new Response(EmployeesController::setAddTeacher($request));
+  }
+]);

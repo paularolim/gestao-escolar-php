@@ -40,11 +40,11 @@ class Database
       $statement->execute($params);
       return $statement;
     } catch (PDOException $e) {
-      die('[ERROR] ' . $e->getMessage());
+      throw new \Error('[ERROR] ' . $e->getMessage());
     }
   }
 
-  public function insert(array $values): string
+  public function insert(array $values): PDO
   {
     $fields = array_keys($values);
     $values = array_values($values);
@@ -54,7 +54,7 @@ class Database
 
     $this->execute($query, $values);
 
-    return $this->connection->lastInsertId();
+    return $this->connection;
   }
 
   public function select($fields = null, $where = null, $order = null, $limit = null): PDOStatement

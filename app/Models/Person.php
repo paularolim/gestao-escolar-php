@@ -14,16 +14,17 @@ abstract class Person
   public string $email;
   public string $password;
 
-  public function __construct(string $name, string $birthDate, string $document, string $email, string $password)
+  public function __construct(string $name, string $birthDate, string $document, string $email)
   {
     $this->id = Uuid::uuid4();
     $this->name = $name;
     $this->birthDate = $birthDate;
     $this->document = $document;
     $this->email = $email;
-    $this->password = $password;
+    $this->password = password_hash($document, PASSWORD_DEFAULT);
   }
 
   public abstract static function getByDocument(string $document);
-  public abstract static function getAll(): PDOStatement;
+  public abstract static function getAll(): array;
+  public abstract function store(): string;
 }
