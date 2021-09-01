@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\Employee;
 use App\Models\Teacher;
 use App\Utils\Pagination;
+use App\Utils\Table;
 use App\Utils\View;
 
 class EmployeeController
@@ -21,20 +22,18 @@ class EmployeeController
   {
     $totalTeachers = Teacher::getCount();
     $pagination = new Pagination($page, $size, $totalTeachers);
-    $teachers = Teacher::getAll(['name', 'formation'], null, null, $pagination->limit());
+    $teachers = Teacher::getAll(['id', 'name', 'formation'], null, null, $pagination->limit());
 
-    $rows = '';
-    foreach ($teachers as $teacher) {
-      $rows .= View::render('employee/components/table-tr-teachers', [
-        'id' => $teacher['id'],
-        'name' => $teacher['name'],
-        'formation' => $teacher['formation']
-      ]);
-    }
+    $table = new Table(
+      ['Nome', 'Formação', 'Ações'],
+      ['name', 'formation', 'button'],
+      $teachers,
+      '/funcionario/professor'
+    );
 
     $content = View::render('employee/list-teachers', [
       'total' => $totalTeachers,
-      'rows' => $rows,
+      'table' => $table->render(),
       'pages' => $pagination->render('/funcionario/professores')
     ]);
 
@@ -47,18 +46,16 @@ class EmployeeController
     $pagination = new Pagination($page, $size, $totalEmployees);
     $employees = Employee::getAll(['name', 'document'], null, null, $pagination->limit());
 
-    $rows = '';
-    foreach ($employees as $employee) {
-      $rows .= View::render('employee/components/table-tr-employees', [
-        'id' => $employee['id'],
-        'name' => $employee['name'],
-        'document' => $employee['document']
-      ]);
-    }
+    $table = new Table(
+      ['Nome', 'CPF', 'Ações'],
+      ['name', 'document', 'button'],
+      $employees,
+      '/funcionario'
+    );
 
     $content = View::render('employee/list-employees', [
       'total' => $totalEmployees,
-      'rows' => $rows,
+      'table' => $table->render(),
       'pages' => $pagination->render('/funcionario/listar')
     ]);
 
