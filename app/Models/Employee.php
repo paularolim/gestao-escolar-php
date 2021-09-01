@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Database\Database;
 use PDO;
+use Ramsey\Uuid\Uuid;
 
 class Employee extends Person
 {
@@ -35,6 +36,11 @@ class Employee extends Person
 
   public function store(): string
   {
-    return '';
+    $this->id = Uuid::uuid4();
+    $this->password = password_hash($this->document, PASSWORD_DEFAULT);
+
+    (new Database(self::$table))->insert((array)$this);
+
+    return $this->id;
   }
 }

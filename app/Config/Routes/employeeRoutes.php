@@ -34,6 +34,16 @@ return function (App $app) {
     return $response;
   });
 
+  $app->get('/funcionario/adicionar', function (ServerRequestInterface $request, ResponseInterface $response, array $args) {
+    $response->getBody()->write(EmployeeController::getAddEmployee());
+    return $response;
+  });
+
+  $app->post('/funcionario/adicionar', function (ServerRequestInterface $request, ResponseInterface $response, array $args) {
+    EmployeeController::setAddEmployee($request->getParsedBody());
+    return $response;
+  });
+
   $app->get('/funcionario/{id}', function (ServerRequestInterface $request, ResponseInterface $response, array $args) {
     $id = $args['id'];
 

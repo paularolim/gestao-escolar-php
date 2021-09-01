@@ -79,7 +79,7 @@ class EmployeeController
 
   public static function getEmployee(string $id)
   {
-    $employee = Employee::getById($id, ['name','document', 'email', 'dateOfBirth']);
+    $employee = Employee::getById($id, ['name', 'document', 'email', 'dateOfBirth']);
 
     $content = View::render('employee/profile-employee', [
       'name' => $employee->name,
@@ -89,5 +89,24 @@ class EmployeeController
     ]);
 
     return LayoutController::getLayout(self::PROFILE, 'Funcionários', $content);
+  }
+
+  public static function getAddEmployee()
+  {
+    $content = View::render('employee/add-employee');
+    return LayoutController::getLayout(self::PROFILE, 'Funcionários', $content);
+  }
+
+  public static function setAddEmployee(array $body)
+  {
+    $employee = new Employee();
+    $employee->name = $body['name'];
+    $employee->dateOfBirth = $body['dateOfBirth'];
+    $employee->document = $body['document'];
+    $employee->email = $body['email'];
+    $employee->store();
+
+    header('Location: /funcionario/listar');
+    exit;
   }
 }
