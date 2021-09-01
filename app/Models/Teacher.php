@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Database\Database;
 use PDO;
 use PDOStatement;
+use Ramsey\Uuid\Uuid;
 
 class Teacher extends Person
 {
@@ -12,13 +13,11 @@ class Teacher extends Person
 
   public string $formation;
 
-  public function __construct(string $name, string $birthDate, string $document, string $email, string $formation)
+  public function __construct()
   {
-    parent::__construct($name, $birthDate, $document, $email);
-    $this->formation = $formation;
   }
 
-  final public static function getByDocument(string $document): Person
+  public static function getByDocument(string $document): Person
   {
     return (new Database(self::TABLE))->select('*', 'document = "' . $document . '"')->fetchObject(self::class);
   }
@@ -41,16 +40,11 @@ class Teacher extends Person
 
   public function store(): string
   {
-    $result = (new Database(self::TABLE))->insert([
-      'id' => $this->id,
-      'name' => $this->name,
-      'birthDate' => $this->birthDate,
-      'document' => $this->document,
-      'email' => $this->email,
-      'password' => $this->password,
-      'formation' => $this->formation
-    ]);
+    $this->id = Uuid::uuid4();
+    $this->password = password_hash($this->document, PASSWORD_DEFAULT);
 
-    return '';
+    (new Database(self::TABLE))->insert((array)$this);
+
+    return $this->id;
   }
 }

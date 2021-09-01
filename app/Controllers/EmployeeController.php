@@ -55,6 +55,26 @@ class EmployeeController
     return LayoutController::getLayout(self::PROFILE, 'Professores', $content);
   }
 
+  public static function getAddTeacher()
+  {
+    $content = View::render('employee/add-teacher');
+    return LayoutController::getLayout(self::PROFILE, 'Professores', $content);
+  }
+
+  public static function setAddTeacher(array $body)
+  {
+    $teacher = new Teacher();
+    $teacher->name = $body['name'];
+    $teacher->dateOfBirth = $body['dateOfBirth'];
+    $teacher->document = $body['document'];
+    $teacher->email = $body['email'];
+    $teacher->formation = $body['formation'];
+    $teacher->store();
+
+    header('Location: /funcionario/professores');
+    exit;
+  }
+
   public static function getEmployees(int $page = 1, int $size = 20): string
   {
     $totalEmployees = Employee::getCount();

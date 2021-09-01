@@ -19,6 +19,16 @@ return function (App $app) {
     return $response;
   });
 
+  $app->get('/funcionario/professor/adicionar', function (ServerRequestInterface $request, ResponseInterface $response) {
+    $response->getBody()->write(EmployeeController::getAddTeacher());
+    return $response;
+  });
+
+  $app->post('/funcionario/professor/adicionar', function (ServerRequestInterface $request, ResponseInterface $response) {
+    EmployeeController::setAddTeacher($request->getParsedBody());
+    return $response;
+  });
+
   $app->get('/funcionario/professor/{id}', function (ServerRequestInterface $request, ResponseInterface $response, array $args) {
     $id = $args['id'];
 
