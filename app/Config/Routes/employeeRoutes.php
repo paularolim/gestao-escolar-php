@@ -18,4 +18,12 @@ return function (App $app) {
     $response->getBody()->write(EmployeeController::getTeachers($start, $size));
     return $response;
   });
+
+  $app->get('/funcionario/listar', function (ServerRequestInterface $request, ResponseInterface $response) {
+    $start = $request->getQueryParams()['page'] ?? 1;
+    $size = $request->getQueryParams()['size'] ?? 5;
+
+    $response->getBody()->write(EmployeeController::getEmployees($start, $size));
+    return $response;
+  });
 };

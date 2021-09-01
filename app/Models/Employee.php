@@ -23,9 +23,14 @@ class Employee extends Person
     return (new Database(self::$table))->select('*', 'document = "' . $id . '"')->fetchObject(self::class);
   }
 
-  public static function getAll(): array
+  public static function getAll(array $fields = null, string $where = null, string $order = null, string $limit = null): array
   {
     return (new Database(self::$table))->select('name')->fetchAll(PDO::FETCH_ASSOC);
+  }
+
+  public static function getCount(): int
+  {
+    return (int)(new Database(self::$table))->select(['count(id) as total'])->fetchColumn(0);
   }
 
   public function store(): string
