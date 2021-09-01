@@ -10,4 +10,12 @@ return function (App $app) {
     $response->getBody()->write(EmployeeController::getDashboard());
     return $response;
   });
+
+  $app->get('/funcionario/professores', function (ServerRequestInterface $request, ResponseInterface $response) {
+    $start = $request->getQueryParams()['page'] ?? 1;
+    $size = $request->getQueryParams()['size'] ?? 5;
+
+    $response->getBody()->write(EmployeeController::getTeachers($start, $size));
+    return $response;
+  });
 };

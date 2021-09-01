@@ -8,7 +8,7 @@ use PDOStatement;
 
 class Teacher extends Person
 {
-  CONST TABLE = 'teachers';
+  const TABLE = 'teachers';
 
   public string $formation;
 
@@ -28,9 +28,15 @@ class Teacher extends Person
     return (new Database(self::TABLE))->select('name, formation', 'id = "' . $id . '"')->fetchAll(PDO::FETCH_CLASS);
   }
 
-  public static function getAll(): array
+  public static function getAll(array $fields = null, string $where = null, string $order = null, string $limit = null): array
   {
-    return (new Database(self::TABLE))->select('name, formation')->fetchAll(PDO::FETCH_ASSOC);
+    $result = (new Database(self::TABLE))->select($fields, $where, $order, $limit)->fetchAll(PDO::FETCH_ASSOC);
+    return $result ? $result : [];
+  }
+
+  public static function getCount(): int
+  {
+    return (int)(new Database(self::TABLE))->select(['count(id) as total'])->fetchColumn(0);
   }
 
   public function store(): string
