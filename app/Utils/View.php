@@ -6,7 +6,7 @@ class View
 {
   private static function getContentView(string $view): string
   {
-    $file = __DIR__ . '/../../resources/views/' . $view . '.html';
+    $file = __DIR__ . '/../../public/views/' . $view . '.html';
     return file_exists($file) ? file_get_contents($file) : '';
   }
 

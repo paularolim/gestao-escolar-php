@@ -8,7 +8,7 @@ use PDOStatement;
 
 class Teacher extends Person
 {
-  private static string $table = 'teachers';
+  CONST TABLE = 'teachers';
 
   public string $formation;
 
@@ -18,20 +18,24 @@ class Teacher extends Person
     $this->formation = $formation;
   }
 
-  public static function getByDocument(string $document)
+  final public static function getByDocument(string $document)
   {
-    return (new Database(self::$table))->select('*', 'document = "' . $document . '"')->fetchObject(self::class);
+    return (new Database(self::TABLE))->select('*', 'document = "' . $document . '"')->fetchAll(PDO::FETCH_CLASS);
+  }
+
+  public static function getById(string $id)
+  {
+    return (new Database(self::TABLE))->select('name, formation', 'id = "' . $id . '"')->fetchAll(PDO::FETCH_CLASS);
   }
 
   public static function getAll(): array
   {
-    return (new Database(self::$table))->select('name, formation')->fetchAll(PDO::FETCH_ASSOC);
+    return (new Database(self::TABLE))->select('name, formation')->fetchAll(PDO::FETCH_ASSOC);
   }
 
   public function store(): string
   {
-    
-    $result = (new Database(self::$table))->insert([
+    $result = (new Database(self::TABLE))->insert([
       'id' => $this->id,
       'name' => $this->name,
       'birthDate' => $this->birthDate,

@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Database\Database;
 use PDO;
-use PDOStatement;
 
 class Employee extends Person
 {
@@ -19,12 +18,18 @@ class Employee extends Person
     return (new Database(self::$table))->select('*', 'document = "' . $document . '"')->fetchObject(self::class);
   }
 
-  public static function getAll(): PDOStatement
+  public static function getById(string $id)
   {
-    return (new Database(self::$table))->select('name');
+    return (new Database(self::$table))->select('*', 'document = "' . $id . '"')->fetchObject(self::class);
   }
 
-  public function store(): string {
+  public static function getAll(): array
+  {
+    return (new Database(self::$table))->select('name')->fetchAll(PDO::FETCH_ASSOC);
+  }
+
+  public function store(): string
+  {
     return '';
   }
 }

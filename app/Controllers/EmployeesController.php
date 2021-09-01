@@ -23,7 +23,7 @@ class EmployeesController
   {
     $teachers = Teacher::getAll();
 
-    
+
     $rows = '';
     foreach ($teachers as $teacher) {
       $rows .= View::render('pages/employee/components/table-tr-teachers', [
@@ -52,9 +52,6 @@ class EmployeesController
 
   public static function setAddTeacher(Request $request): void
   {
-    echo '<pre>';
-    print_r($request->getPostVars());
-    echo '</pre>';
     $postVars = $request->getPostVars();
 
     $name = $postVars['name'] ?? '';
@@ -70,6 +67,19 @@ class EmployeesController
     } catch (\Error $error) {
       $request->getRouter()->redirect('/funcionarios/professores/adicionar');
     }
+  }
+
+  public static function getTeacherProfile(string $id): string
+  {
+    $teacher = Teacher::getById($id)[0];
+    echo '<pre>';
+    print_r($teacher);
+    echo '</pre>';
+
+    $content = View::render('pages/employee/profile-teacher', [
+      'name' => $teacher['name']
+    ]);
+    return LayoutController::getLayout(self::PROFILE, 'Professores', $content);
   }
 
   public static function setLogin(Request $request)

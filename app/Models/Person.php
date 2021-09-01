@@ -25,6 +25,7 @@ abstract class Person
   }
 
   public abstract static function getByDocument(string $document);
+  public abstract static function getById(string $id);
   public abstract static function getAll(): array;
   public abstract function store(): string;
 }
