@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Teacher;
+use App\Utils\Pagination;
 use App\Utils\View;
 
 class EmployeeController
@@ -16,12 +17,10 @@ class EmployeeController
   }
 
   public static function getTeachers(int $page = 1, int $size = 20): string
-  { // TODO: calculate page
+  {
     $totalTeachers = Teacher::getCount();
-    $totalPages = ceil($totalTeachers / $size);
-    $startItem = ($size * $page) - $size;
-
-    $teachers = Teacher::getAll(['name', 'formation'], null, null, $startItem . ',' . $size);
+    $pagination = new Pagination($page, $size, $totalTeachers);
+    $teachers = Teacher::getAll(['name', 'formation'], null, null, $pagination->limit());
 
     $rows = '';
     foreach ($teachers as $teacher) {
@@ -32,19 +31,10 @@ class EmployeeController
       ]);
     }
 
-    $pagination = '';
-    for ($i = 0; $i < $totalPages; $i++) {
-      $pagination .= View::render('employee/components/pagination-number', [
-        'URL' => '/funcionario/professores',
-        'page' => $i + 1,
-        'size' => $size,
-        'active' => $page === ($i + 1) ? 'w3-blue' : ''
-      ]);
-    }
-
     $content = View::render('employee/list-teachers', [
+      'total' => $totalTeachers,
       'rows' => $rows,
-      'pages' => $pagination
+      'pages' => $pagination->render('/funcionario/professores')
     ]);
 
     return LayoutController::getLayout(self::PROFILE, 'Professores', $content);

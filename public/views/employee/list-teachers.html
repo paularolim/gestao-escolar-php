@@ -3,7 +3,17 @@
     <h1>Lista de professores</h1>
   </div>
   <div class="w3-col s3 w3-middle">
-    <a href="/funcionarios/professores/adicionar" class="w3-button w3-blue w3-right w3-margin-top">Novo</a>
+    <a
+      href="/funcionarios/professores/adicionar"
+      class="w3-button w3-blue w3-right w3-margin-top"
+      >Novo</a
+    >
+  </div>
+</div>
+
+<div class="w3-row">
+  <div class="w3-col">
+    <p class="w3-opacity">Total de registros: {{total}}</p>
   </div>
 </div>
 
@@ -20,6 +30,4 @@
   </tbody>
 </table>
 
-<div class="w3-bar">
-  {{pages}}
-</div>
+<div class="w3-bar w3-margin-top">{{pages}}</div>
