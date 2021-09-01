@@ -21,7 +21,7 @@ return function (App $app) {
 
   $app->get('/funcionario/professor/{id}', function (ServerRequestInterface $request, ResponseInterface $response, array $args) {
     $id = $args['id'];
-    
+
     $response->getBody()->write(EmployeeController::getTeacher($id));
     return $response;
   });
@@ -31,6 +31,13 @@ return function (App $app) {
     $size = $request->getQueryParams()['size'] ?? 5;
 
     $response->getBody()->write(EmployeeController::getEmployees($start, $size));
+    return $response;
+  });
+
+  $app->get('/funcionario/{id}', function (ServerRequestInterface $request, ResponseInterface $response, array $args) {
+    $id = $args['id'];
+
+    $response->getBody()->write(EmployeeController::getEmployee($id));
     return $response;
   });
 };

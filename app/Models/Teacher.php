@@ -18,14 +18,14 @@ class Teacher extends Person
     $this->formation = $formation;
   }
 
-  final public static function getByDocument(string $document)
+  final public static function getByDocument(string $document): Person
   {
-    return (new Database(self::TABLE))->select('*', 'document = "' . $document . '"')->fetchAll(PDO::FETCH_CLASS);
+    return (new Database(self::TABLE))->select('*', 'document = "' . $document . '"')->fetchObject(self::class);
   }
 
-  public static function getById(string $id, array $fields = null)
+  public static function getById(string $id, array $fields = null): Person
   {
-    return (new Database(self::TABLE))->select($fields, 'id = "' . $id . '"')->fetch(PDO::FETCH_ASSOC);
+    return (new Database(self::TABLE))->select($fields, 'id = "' . $id . '"')->fetchObject(self::class);
   }
 
   public static function getAll(array $fields = null, string $where = null, string $order = null, string $limit = null): array

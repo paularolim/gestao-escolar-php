@@ -76,4 +76,18 @@ class EmployeeController
 
     return LayoutController::getLayout(self::PROFILE, 'Funcionários', $content);
   }
+
+  public static function getEmployee(string $id)
+  {
+    $employee = Employee::getById($id, ['name','document', 'email', 'dateOfBirth']);
+
+    $content = View::render('employee/profile-employee', [
+      'name' => $employee->name,
+      'document' => $employee->document,
+      'dateOfBirth' => $employee->dateOfBirth,
+      'email' => $employee->email
+    ]);
+
+    return LayoutController::getLayout(self::PROFILE, 'Funcionários', $content);
+  }
 }
