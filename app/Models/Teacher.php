@@ -23,9 +23,9 @@ class Teacher extends Person
     return (new Database(self::TABLE))->select('*', 'document = "' . $document . '"')->fetchAll(PDO::FETCH_CLASS);
   }
 
-  public static function getById(string $id)
+  public static function getById(string $id, array $fields = null)
   {
-    return (new Database(self::TABLE))->select('name, formation', 'id = "' . $id . '"')->fetchAll(PDO::FETCH_CLASS);
+    return (new Database(self::TABLE))->select($fields, 'id = "' . $id . '"')->fetch(PDO::FETCH_ASSOC);
   }
 
   public static function getAll(array $fields = null, string $where = null, string $order = null, string $limit = null): array

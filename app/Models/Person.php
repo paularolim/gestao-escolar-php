@@ -25,7 +25,7 @@ abstract class Person
   }
 
   public abstract static function getByDocument(string $document);
-  public abstract static function getById(string $id);
+  public abstract static function getById(string $id, array $fields = null);
   public abstract static function getAll(array $fields = null, string $where = null, string $order = null, string $limit = null): array;
   public abstract static function getCount(): int;
   public abstract function store(): string;

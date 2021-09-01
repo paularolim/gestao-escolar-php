@@ -40,6 +40,21 @@ class EmployeeController
     return LayoutController::getLayout(self::PROFILE, 'Professores', $content);
   }
 
+  public static function getTeacher(string $id)
+  {
+    $teacher = Teacher::getById($id, ['name', 'formation', 'document', 'email', 'dateOfBirth']);
+
+    $content = View::render('employee/profile-teacher', [
+      'name' => $teacher['name'],
+      'formation' => $teacher['formation'],
+      'document' => $teacher['document'],
+      'dateOfBirth' => $teacher['dateOfBirth'],
+      'email' => $teacher['email']
+    ]);
+
+    return LayoutController::getLayout(self::PROFILE, 'Professores', $content);
+  }
+
   public static function getEmployees(int $page = 1, int $size = 20): string
   {
     $totalEmployees = Employee::getCount();

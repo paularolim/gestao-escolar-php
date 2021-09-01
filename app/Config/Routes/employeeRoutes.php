@@ -19,6 +19,13 @@ return function (App $app) {
     return $response;
   });
 
+  $app->get('/funcionario/professor/{id}', function (ServerRequestInterface $request, ResponseInterface $response, array $args) {
+    $id = $args['id'];
+    
+    $response->getBody()->write(EmployeeController::getTeacher($id));
+    return $response;
+  });
+
   $app->get('/funcionario/listar', function (ServerRequestInterface $request, ResponseInterface $response) {
     $start = $request->getQueryParams()['page'] ?? 1;
     $size = $request->getQueryParams()['size'] ?? 5;

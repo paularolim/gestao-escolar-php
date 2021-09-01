@@ -18,9 +18,9 @@ class Employee extends Person
     return (new Database(self::$table))->select('*', 'document = "' . $document . '"')->fetchObject(self::class);
   }
 
-  public static function getById(string $id)
+  public static function getById(string $id, array $fields = null)
   {
-    return (new Database(self::$table))->select('*', 'document = "' . $id . '"')->fetchObject(self::class);
+    return (new Database(self::$table))->select($fields, 'document = "' . $id . '"')->fetchObject(self::class);
   }
 
   public static function getAll(array $fields = null, string $where = null, string $order = null, string $limit = null): array
