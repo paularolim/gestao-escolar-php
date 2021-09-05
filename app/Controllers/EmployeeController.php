@@ -158,11 +158,21 @@ class EmployeeController
   {
     $student = Student::getById($id, ['name', 'document', 'email', 'dateOfBirth']);
 
+    $classes = Student::getClasses($id);
+
+    $tableClasses = new Table(
+      ['Série', 'Turma', 'Ações'],
+      ['number', 'identifier', 'button'],
+      $classes,
+      '/funcionario/turma'
+    );
+
     $content = View::render('employee/profile-student', [
       'name' => $student->name,
       'document' => $student->document,
       'dateOfBirth' => $student->dateOfBirth,
-      'email' => $student->email
+      'email' => $student->email,
+      'tableClasses' => $tableClasses->render()
     ]);
 
     return LayoutController::getLayout(self::PROFILE, 'Alunos', $content);

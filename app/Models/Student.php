@@ -34,6 +34,16 @@ class Student extends Person
     return (int)(new Database(self::TABLE))->select(['count(id) as total'])->fetchColumn(0);
   }
 
+  public static function getClasses($id)
+  {
+    return (new Database(self::TABLE))->custom(
+      'select c.id, c.number, c.identifier, c.year 
+      from students s 
+      inner join students_classes sc, classes c
+      where s.id = "' . $id . '" and sc.idStudent = s.id and sc.idClass = c.id'
+    )->fetchAll(PDO::FETCH_ASSOC);
+  }
+
   public function store(): string
   {
     $this->id = Uuid::uuid4();
