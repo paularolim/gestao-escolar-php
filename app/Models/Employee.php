@@ -26,7 +26,7 @@ class Employee extends Person
 
   public static function getAll(array $fields = null, string $where = null, string $order = null, string $limit = null): array
   {
-    return (new Database(self::$table))->select('name')->fetchAll(PDO::FETCH_ASSOC);
+    return (new Database(self::$table))->select($fields, $where, $order, $limit)->fetchAll(PDO::FETCH_ASSOC);
   }
 
   public static function getCount(): int

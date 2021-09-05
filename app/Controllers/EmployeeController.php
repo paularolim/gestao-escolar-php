@@ -45,11 +45,11 @@ class EmployeeController
     $teacher = Teacher::getById($id, ['name', 'formation', 'document', 'email', 'dateOfBirth']);
 
     $content = View::render('employee/profile-teacher', [
-      'name' => $teacher['name'],
-      'formation' => $teacher['formation'],
-      'document' => $teacher['document'],
-      'dateOfBirth' => $teacher['dateOfBirth'],
-      'email' => $teacher['email']
+      'name' => $teacher->name,
+      'formation' => $teacher->formation,
+      'document' => $teacher->document,
+      'dateOfBirth' => $teacher->dateOfBirth,
+      'email' => $teacher->email
     ]);
 
     return LayoutController::getLayout(self::PROFILE, 'Professores', $content);
@@ -79,7 +79,7 @@ class EmployeeController
   {
     $totalEmployees = Employee::getCount();
     $pagination = new Pagination($page, $size, $totalEmployees);
-    $employees = Employee::getAll(['name', 'document'], null, null, $pagination->limit());
+    $employees = Employee::getAll(['id', 'name', 'document'], null, null, $pagination->limit());
 
     $table = new Table(
       ['Nome', 'CPF', 'Ações'],

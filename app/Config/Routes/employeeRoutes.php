@@ -13,7 +13,7 @@ return function (App $app) {
 
   $app->get('/funcionario/professores', function (ServerRequestInterface $request, ResponseInterface $response) {
     $start = $request->getQueryParams()['page'] ?? 1;
-    $size = $request->getQueryParams()['size'] ?? 5;
+    $size = $request->getQueryParams()['size'] ?? 20;
 
     $response->getBody()->write(EmployeeController::getTeachers($start, $size));
     return $response;
@@ -38,7 +38,7 @@ return function (App $app) {
 
   $app->get('/funcionario/listar', function (ServerRequestInterface $request, ResponseInterface $response) {
     $start = $request->getQueryParams()['page'] ?? 1;
-    $size = $request->getQueryParams()['size'] ?? 5;
+    $size = $request->getQueryParams()['size'] ?? 20;
 
     $response->getBody()->write(EmployeeController::getEmployees($start, $size));
     return $response;
