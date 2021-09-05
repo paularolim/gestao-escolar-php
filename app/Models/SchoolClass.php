@@ -12,6 +12,7 @@ class SchoolClass
   public int $number;
   public string $identifier;
   public int $year;
+  public int $maxStudents;
 
   const TABLE = 'classes';
 

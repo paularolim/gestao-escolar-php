@@ -244,6 +244,7 @@ class EmployeeController
     $class->number = $body['number'];
     $class->identifier = $body['identifier'];
     $class->year = $body['year'];
+    $class->maxStudents = $body['maxStudents'];
     $class->store();
 
     header('Location: /funcionario/turmas');
