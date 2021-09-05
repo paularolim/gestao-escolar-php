@@ -54,6 +54,31 @@ return function (App $app) {
     return $response;
   });
 
+  $app->get('/funcionario/alunos', function (ServerRequestInterface $request, ResponseInterface $response) {
+    $start = $request->getQueryParams()['page'] ?? 1;
+    $size = $request->getQueryParams()['size'] ?? 20;
+
+    $response->getBody()->write(EmployeeController::getStudents($start, $size));
+    return $response;
+  });
+
+  $app->get('/funcionario/aluno/adicionar', function (ServerRequestInterface $request, ResponseInterface $response) {
+    $response->getBody()->write(EmployeeController::getAddStudent());
+    return $response;
+  });
+
+  $app->post('/funcionario/aluno/adicionar', function (ServerRequestInterface $request, ResponseInterface $response) {
+    EmployeeController::setAddStudent($request->getParsedBody());
+    return $response;
+  });
+
+  $app->get('/funcionario/aluno/{id}', function (ServerRequestInterface $request, ResponseInterface $response, array $args) {
+    $id = $args['id'];
+
+    $response->getBody()->write(EmployeeController::getStudent($id));
+    return $response;
+  });
+
   $app->get('/funcionario/{id}', function (ServerRequestInterface $request, ResponseInterface $response, array $args) {
     $id = $args['id'];
 
