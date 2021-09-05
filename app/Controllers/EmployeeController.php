@@ -212,11 +212,21 @@ class EmployeeController
   public static function getClass(string $id)
   {
     $class = SchoolClass::getById($id);
+    $students = SchoolClass::getStudents($id);
+
+    $tableStudents = new Table(
+      ['Nome', 'CPF', 'Ações'],
+      ['name', 'document', 'button'],
+      $students,
+      '/funcionario/aluno'
+    );
 
     $content = View::render('employee/details-class', [
       'number' => $class->number,
       'identifier' => $class->identifier,
-      'maxStudents' => $class->maxStudents
+      'maxStudents' => $class->maxStudents,
+      'tableStudents' => $tableStudents->render(),
+      'totalStudents' => count($students)
     ]);
 
     return LayoutController::getLayout(self::PROFILE, 'Turmas', $content);

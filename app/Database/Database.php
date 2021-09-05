@@ -68,4 +68,9 @@ class Database
 
     return $this->execute($query);
   }
+
+  public function custom(string $query)
+  {
+    return $this->execute($query);
+  }
 }

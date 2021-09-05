@@ -35,6 +35,11 @@ class SchoolClass
     return (int)(new Database(self::TABLE))->select(['count(id) as total'])->fetchColumn(0);
   }
 
+  public static function getStudents(string $id)
+  {
+    return (new Database('students_classes'))->custom('select s.id, s.name, s.document from students_classes sc inner join students s where sc.idClass = "' . $id . '" and sc.idStudent = s.id')->fetchAll(PDO::FETCH_ASSOC);
+  }
+
   public function store(): string
   {
     $this->id = Uuid::uuid4();
