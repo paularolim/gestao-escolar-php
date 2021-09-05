@@ -79,6 +79,31 @@ return function (App $app) {
     return $response;
   });
 
+  $app->get('/funcionario/turmas', function (ServerRequestInterface $request, ResponseInterface $response, array $args) {
+    $start = $request->getQueryParams()['page'] ?? 1;
+    $size = $request->getQueryParams()['size'] ?? 20;
+
+    $response->getBody()->write(EmployeeController::getClasses($start, $size));
+    return $response;
+  });
+
+  $app->get('/funcionario/turma/adicionar', function (ServerRequestInterface $request, ResponseInterface $response) {
+    $response->getBody()->write(EmployeeController::getAddClass());
+    return $response;
+  });
+
+  $app->post('/funcionario/turma/adicionar', function (ServerRequestInterface $request, ResponseInterface $response) {
+    EmployeeController::setAddClass($request->getParsedBody());
+    return $response;
+  });
+
+  $app->get('/funcionario/turma/{id}', function (ServerRequestInterface $request, ResponseInterface $response, array $args) {
+    $id = $args['id'];
+
+    $response->getBody()->write(EmployeeController::getClass($id));
+    return $response;
+  });
+
   $app->get('/funcionario/{id}', function (ServerRequestInterface $request, ResponseInterface $response, array $args) {
     $id = $args['id'];
 

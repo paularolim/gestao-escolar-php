@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Employee;
+use App\Models\SchoolClass;
 use App\Models\Student;
 use App\Models\Teacher;
 use App\Utils\Pagination;
@@ -183,6 +184,59 @@ class EmployeeController
     $student->store();
 
     header('Location: /funcionario/alunos');
+    exit;
+  }
+
+  public static function getClasses(int $page = 1, int $size = 20): string
+  {
+    $totalClasses = SchoolClass::getCount();
+    $pagination = new Pagination($page, $size, $totalClasses);
+    $classes = SchoolClass::getAll(null, null, null, $pagination->limit());
+
+    $table = new Table(
+      ['Série', 'Turma', 'Ano', 'Ações'],
+      ['number', 'identifier', 'year', 'button'],
+      $classes,
+      '/funcionario/turma'
+    );
+
+    $content = View::render('employee/list-classes', [
+      'total' => $totalClasses,
+      'table' => $table->render(),
+      'pages' => $pagination->render('/funcionario/turmas')
+    ]);
+
+    return LayoutController::getLayout(self::PROFILE, 'Turmas', $content);
+  }
+
+  public static function getClass(string $id)
+  {
+    $class = SchoolClass::getById($id);
+
+    $content = View::render('employee/details-class', [
+      'number' => $class->number,
+      'identifier' => $class->identifier,
+      'maxStudents' => $class->maxStudents
+    ]);
+
+    return LayoutController::getLayout(self::PROFILE, 'Turmas', $content);
+  }
+
+  public static function getAddClass()
+  {
+    $content = View::render('employee/add-class');
+    return LayoutController::getLayout(self::PROFILE, 'Turmas', $content);
+  }
+
+  public static function setAddClass(array $body)
+  {
+    $class = new SchoolClass();
+    $class->number = $body['number'];
+    $class->identifier = $body['identifier'];
+    $class->year = $body['year'];
+    $class->store();
+
+    header('Location: /funcionario/turmas');
     exit;
   }
 }
