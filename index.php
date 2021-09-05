@@ -20,6 +20,7 @@ $app = AppFactory::create();
 (require('./app/Config/Middlewares/ErrorMiddleware.php'))($app);
 
 // routes
+(require('./app/Config/Routes/employeeSubjectsRoutes.php'))($app);
 (require('./app/Config/Routes/employeeRoutes.php'))($app);
 
 $app->run();
