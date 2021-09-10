@@ -19,6 +19,11 @@ class Subject
     return (new Database(self::TABLE))->select($fields, $where, $order, $limit)->fetchAll(PDO::FETCH_ASSOC);
   }
 
+  public static function getById(string $id, array $fields = null): Subject
+  {
+    return (new Database(self::TABLE))->select($fields, 'id = "' . $id . '"')->fetchObject(self::class);
+  }
+
   public static function getCount(): int
   {
     return (int)(new Database(self::TABLE))->select(['count(id) as total'])->fetchColumn(0);

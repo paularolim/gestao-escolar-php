@@ -33,6 +33,17 @@ class EmployeeSubjectController
     return LayoutController::getLayout(self::PROFILE, 'Funcionários', $content);
   }
 
+  public static function getSubject(string $id)
+  {
+    $subject = Subject::getById($id);
+
+    $content = View::render('employee/subject/details', [
+      'name' => $subject->name,
+      'workload' => $subject->workload
+    ]);
+    return LayoutController::getLayout(self::PROFILE, 'Matérias', $content);
+  }
+
   public static function getAddSubject()
   {
     $content = View::render('/employee/subject/add');

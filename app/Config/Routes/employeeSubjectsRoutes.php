@@ -26,5 +26,12 @@ return function (App $app) {
       $response->getBody()->write(EmployeeSubjectController::setAddSubject($request->getParsedBody()));
       return $response;
     });
+
+    $group->get('/materia/{id}', function (ServerRequestInterface $request, ResponseInterface $response, array $args) {
+      $id = $args['id'];
+
+      $response->getBody()->write(EmployeeSubjectController::getSubject($id));
+      return $response;
+    });
   });
 };
