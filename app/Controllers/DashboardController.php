@@ -9,7 +9,8 @@ class DashboardController
   public static function getDashboard()
   {
     $profile = $_SESSION['user']['type'];
+    
     $content = View::render('pages/dashboard-'.$profile);
-    return LayoutController::getLayout($profile, 'Dashboard', $content);
+    return LayoutController::getLayout('Dashboard', $content);
   }
 }

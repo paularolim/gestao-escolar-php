@@ -30,7 +30,7 @@ class EmployeeSubjectController
       'pages' => $pagination->render('/funcionario/materias')
     ]);
 
-    return LayoutController::getLayout(self::PROFILE, 'Funcionários', $content);
+    return LayoutController::getLayout('Funcionários', $content);
   }
 
   public static function getSubject(string $id)
@@ -41,13 +41,13 @@ class EmployeeSubjectController
       'name' => $subject->name,
       'workload' => $subject->workload
     ]);
-    return LayoutController::getLayout(self::PROFILE, 'Matérias', $content);
+    return LayoutController::getLayout('Matérias', $content);
   }
 
   public static function getAddSubject()
   {
     $content = View::render('/employee/subject/add');
-    return LayoutController::getLayout(self::PROFILE, 'Funcionários', $content);
+    return LayoutController::getLayout('Funcionários', $content);
   }
 
   public static function setAddSubject(array $body)

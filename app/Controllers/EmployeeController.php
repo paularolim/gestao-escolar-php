@@ -17,7 +17,7 @@ class EmployeeController
   public static function getDashboard()
   {
     $content = View::render('employee/dashboard');
-    return LayoutController::getLayout(self::PROFILE, 'Funcionário', $content);
+    return LayoutController::getLayout('Funcionário', $content);
   }
 
   public static function getTeachers(int $page = 1, int $size = 20): string
@@ -39,7 +39,7 @@ class EmployeeController
       'pages' => $pagination->render('/funcionario/professores')
     ]);
 
-    return LayoutController::getLayout(self::PROFILE, 'Professores', $content);
+    return LayoutController::getLayout('Professores', $content);
   }
 
   public static function getTeacher(string $id)
@@ -54,13 +54,13 @@ class EmployeeController
       'email' => $teacher->email
     ]);
 
-    return LayoutController::getLayout(self::PROFILE, 'Professores', $content);
+    return LayoutController::getLayout('Professores', $content);
   }
 
   public static function getAddTeacher()
   {
     $content = View::render('employee/add-teacher');
-    return LayoutController::getLayout(self::PROFILE, 'Professores', $content);
+    return LayoutController::getLayout('Professores', $content);
   }
 
   public static function setAddTeacher(array $body)
@@ -96,7 +96,7 @@ class EmployeeController
       'pages' => $pagination->render('/funcionario/listar')
     ]);
 
-    return LayoutController::getLayout(self::PROFILE, 'Funcionários', $content);
+    return LayoutController::getLayout('Funcionários', $content);
   }
 
   public static function getEmployee(string $id)
@@ -110,13 +110,13 @@ class EmployeeController
       'email' => $employee->email
     ]);
 
-    return LayoutController::getLayout(self::PROFILE, 'Funcionários', $content);
+    return LayoutController::getLayout('Funcionários', $content);
   }
 
   public static function getAddEmployee()
   {
     $content = View::render('employee/add-employee');
-    return LayoutController::getLayout(self::PROFILE, 'Funcionários', $content);
+    return LayoutController::getLayout('Funcionários', $content);
   }
 
   public static function setAddEmployee(array $body)
@@ -151,7 +151,7 @@ class EmployeeController
       'pages' => $pagination->render('/funcionario/alunos')
     ]);
 
-    return LayoutController::getLayout(self::PROFILE, 'Alunos', $content);
+    return LayoutController::getLayout('Alunos', $content);
   }
 
   public static function getStudent(string $id)
@@ -175,13 +175,13 @@ class EmployeeController
       'tableClasses' => $tableClasses->render()
     ]);
 
-    return LayoutController::getLayout(self::PROFILE, 'Alunos', $content);
+    return LayoutController::getLayout('Alunos', $content);
   }
 
   public static function getAddStudent()
   {
     $content = View::render('employee/add-student');
-    return LayoutController::getLayout(self::PROFILE, 'Alunos', $content);
+    return LayoutController::getLayout('Alunos', $content);
   }
 
   public static function setAddStudent(array $body)
@@ -216,7 +216,7 @@ class EmployeeController
       'pages' => $pagination->render('/funcionario/turmas')
     ]);
 
-    return LayoutController::getLayout(self::PROFILE, 'Turmas', $content);
+    return LayoutController::getLayout('Turmas', $content);
   }
 
   public static function getClass(string $id)
@@ -239,13 +239,13 @@ class EmployeeController
       'totalStudents' => count($students)
     ]);
 
-    return LayoutController::getLayout(self::PROFILE, 'Turmas', $content);
+    return LayoutController::getLayout('Turmas', $content);
   }
 
   public static function getAddClass()
   {
     $content = View::render('employee/add-class');
-    return LayoutController::getLayout(self::PROFILE, 'Turmas', $content);
+    return LayoutController::getLayout('Turmas', $content);
   }
 
   public static function setAddClass(array $body)

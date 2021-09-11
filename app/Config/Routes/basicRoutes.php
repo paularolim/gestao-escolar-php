@@ -5,7 +5,7 @@ use App\Config\Middlewares\RequiredLogoutMiddleware;
 
 use App\Controllers\LoginController;
 use App\Controllers\DashboardController;
-
+use App\Controllers\ProfileController;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\App;
@@ -33,6 +33,11 @@ return function (App $app) {
 
   $app->get('/dashboard', function (ServerRequestInterface $request, ResponseInterface $response) {
     $response->getBody()->write(DashboardController::getDashboard());
+    return $response;
+  })->add(new RequiredLoginMiddleware);
+
+  $app->get('/perfil', function (ServerRequestInterface $request, ResponseInterface $response) {
+    $response->getBody()->write(ProfileController::getProfile());
     return $response;
   })->add(new RequiredLoginMiddleware);
 };

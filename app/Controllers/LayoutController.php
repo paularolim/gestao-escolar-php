@@ -17,8 +17,10 @@ class LayoutController
     ]);
   }
 
-  public static function getLayout(string $profile, string $title, string $content)
+  public static function getLayout(string $title, string $content)
   {
+    $profile = $_SESSION['user']['type'];
+    
     return View::render('layouts/layout', [
       'title' => self::TITLE . $title,
       'header' => self::getHeader($profile),
