@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Sessions;
+namespace App\Config\Sessions;
 
 use App\Models\Teacher;
 
@@ -10,7 +10,8 @@ class TeacherSession
   {
     self::init();
 
-    $_SESSION['teacher'] = [
+    $_SESSION['user'] = [
+      'type' => 'teacher',
       'id' => $teacher->id,
       'name' => $teacher->name
     ];
@@ -22,7 +23,7 @@ class TeacherSession
   {
     self::init();
 
-    unset($_SESSION['teacher']);
+    unset($_SESSION['user']);
 
     return true;
   }
@@ -31,7 +32,7 @@ class TeacherSession
   {
     self::init();
 
-    return isset($_SESSION['teacher']['id']);
+    return isset($_SESSION['user']['id']);
   }
 
   private static function init()

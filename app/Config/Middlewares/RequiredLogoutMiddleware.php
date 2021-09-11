@@ -3,6 +3,7 @@
 namespace App\Config\Middlewares;
 
 use App\Config\Sessions\EmployeeSession;
+use App\Config\Sessions\TeacherSession;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Psr7\Response;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
@@ -11,7 +12,7 @@ class RequiredLogoutMiddleware
 {
   public function __invoke(Request $request, RequestHandler $handler): Response
   {
-    if (EmployeeSession::isLogged()) {
+    if (EmployeeSession::isLogged() || TeacherSession::isLogged()) {
       header('Location: /dashboard');
       exit;
     } 

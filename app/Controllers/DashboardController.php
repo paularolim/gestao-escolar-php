@@ -10,6 +10,6 @@ class DashboardController
   {
     $profile = $_SESSION['user']['type'];
     $content = View::render('pages/dashboard-'.$profile);
-    return LayoutController::getLayout('employee', 'Dashboard', $content);
+    return LayoutController::getLayout($profile, 'Dashboard', $content);
   }
 }

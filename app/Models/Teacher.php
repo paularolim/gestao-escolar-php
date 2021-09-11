@@ -17,9 +17,10 @@ class Teacher extends Person
   {
   }
 
-  public static function getByDocument(string $document): Person
+  public static function getByDocument(string $document): ?Person
   {
-    return (new Database(self::TABLE))->select('*', 'document = "' . $document . '"')->fetchObject(self::class);
+    $result = (new Database(self::TABLE))->select('*', 'document = "' . $document . '"')->fetchObject(self::class);
+    return $result ? $result : null;
   }
 
   public static function getById(string $id, array $fields = null): Person
