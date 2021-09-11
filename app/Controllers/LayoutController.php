@@ -10,7 +10,7 @@ class LayoutController
 
   private static function getHeader(string $profile): string
   {
-    $user = $_SESSION[$profile];
+    $user = $_SESSION['user'];
 
     return View::render('layouts/header-' . $profile, [
       'name' => $user['name'] ?? 'Nome'

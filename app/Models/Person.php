@@ -24,7 +24,7 @@ abstract class Person
     $this->password = password_hash($document, PASSWORD_DEFAULT);
   }
 
-  public abstract static function getByDocument(string $document): Person;
+  public abstract static function getByDocument(string $document): ?Person;
   public abstract static function getById(string $id, array $fields = null): Person;
   public abstract static function getAll(array $fields = null, string $where = null, string $order = null, string $limit = null): array;
   public abstract static function getCount(): int;

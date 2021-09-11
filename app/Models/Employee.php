@@ -14,9 +14,10 @@ class Employee extends Person
   {
   }
 
-  public static function getByDocument(string $document): Person
+  public static function getByDocument(string $document): ?Person
   {
-    return (new Database(self::$table))->select('*', 'document = "' . $document . '"')->fetchObject(self::class);
+    $result = (new Database(self::$table))->select('*', 'document = "' . $document . '"')->fetchObject(self::class);
+    return $result ? $result : null; 
   }
 
   public static function getById(string $id, array $fields = null): Person

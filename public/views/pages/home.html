@@ -16,7 +16,8 @@
             <h2>Funcionários</h2>
           </div>
           {{messageEmployee}}
-          <form action="/funcionarios/login" method="post" class="w3-padding">
+          <form action="/" method="post" class="w3-padding">
+            <input type="hidden" name="profile" value="employee">
             <label for="document" class="w3-margin-top">CPF</label>
             <input
               type="text"
