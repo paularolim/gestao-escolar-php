@@ -41,7 +41,7 @@ class StudentController
       ['Série', 'Turma', 'Ações'],
       ['number', 'identifier', 'button'],
       $classes,
-      '/funcionario/turma'
+      '/turmas'
     );
 
     $content = View::render('student/profile', [
