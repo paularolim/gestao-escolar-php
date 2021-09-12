@@ -7,10 +7,8 @@ use App\Utils\Pagination;
 use App\Utils\Table;
 use App\Utils\View;
 
-class EmployeeSubjectController
+class SubjectController
 {
-  const PROFILE = 'employee';
-
   public static function getSubjects(int $page = 1, int $size = 20)
   {
     $totalSubjects = Subject::getCount();
@@ -21,13 +19,13 @@ class EmployeeSubjectController
       ['Matéria', 'Carga horária', 'Ações'],
       ['name', 'workload', 'button'],
       $subjects,
-      '/funcionario/materia'
+      '/materias'
     );
 
-    $content = View::render('employee/subject/list', [
+    $content = View::render('subject/list', [
       'total' => $totalSubjects,
       'table' => $table->render(),
-      'pages' => $pagination->render('/funcionario/materias')
+      'pages' => $pagination->render('/materias')
     ]);
 
     return LayoutController::getLayout('Funcionários', $content);
@@ -35,9 +33,10 @@ class EmployeeSubjectController
 
   public static function getSubject(string $id)
   {
+    // TODO: show teachers who teach the subject
     $subject = Subject::getById($id);
 
-    $content = View::render('employee/subject/details', [
+    $content = View::render('subject/details', [
       'name' => $subject->name,
       'workload' => $subject->workload
     ]);
@@ -46,7 +45,7 @@ class EmployeeSubjectController
 
   public static function getAddSubject()
   {
-    $content = View::render('/employee/subject/add');
+    $content = View::render('/subject/add');
     return LayoutController::getLayout('Funcionários', $content);
   }
 
@@ -57,7 +56,7 @@ class EmployeeSubjectController
     $subject->workload = $body['workload'];
     $subject->store();
 
-    header('Location: /funcionario/materias');
+    header('Location: /materias');
     exit;
   }
 }
