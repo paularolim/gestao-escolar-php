@@ -22,6 +22,7 @@ $app = AppFactory::create();
 // routes
 (require './app/Config/Routes/basicRoutes.php')($app);
 (require './app/Config/Routes/employeeRoutes.php')($app);
+(require './app/Config/Routes/teacherRoutes.php')($app);
 (require './app/Config/Routes/subjectRoutes.php')($app);
 
 $app->run();
