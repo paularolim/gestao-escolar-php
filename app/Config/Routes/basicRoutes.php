@@ -14,7 +14,7 @@ return function (App $app) {
   $app->get('/', function (ServerRequestInterface $request, ResponseInterface $response) {
     $response->getBody()->write(LoginController::getLogin());
     return $response;
-  })->add(new RequiredLogoutMiddleware);
+  })->add(new RequiredLogoutMiddleware());
 
   $app->post('/', function (ServerRequestInterface $request, ResponseInterface $response) {
     $body = $request->getParsedBody();
@@ -34,10 +34,10 @@ return function (App $app) {
   $app->get('/dashboard', function (ServerRequestInterface $request, ResponseInterface $response) {
     $response->getBody()->write(DashboardController::getDashboard());
     return $response;
-  })->add(new RequiredLoginMiddleware);
+  })->add(new RequiredLoginMiddleware());
 
   $app->get('/perfil', function (ServerRequestInterface $request, ResponseInterface $response) {
     $response->getBody()->write(ProfileController::getProfile());
     return $response;
-  })->add(new RequiredLoginMiddleware);
+  })->add(new RequiredLoginMiddleware());
 };

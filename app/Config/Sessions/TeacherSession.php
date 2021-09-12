@@ -32,7 +32,7 @@ class TeacherSession
   {
     self::init();
 
-    return isset($_SESSION['user']['id']);
+    return (isset($_SESSION['user']['id']) && $_SESSION['user']['type'] === 'teacher');
   }
 
   private static function init()

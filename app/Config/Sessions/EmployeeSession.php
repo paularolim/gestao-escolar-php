@@ -31,8 +31,7 @@ class EmployeeSession
   public static function isLogged(): bool
   {
     self::init();
-
-    return isset($_SESSION['user']['id']);
+    return (isset($_SESSION['user']['id']) && $_SESSION['user']['type'] === 'employee');
   }
 
   private static function init()

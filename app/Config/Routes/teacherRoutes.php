@@ -1,5 +1,6 @@
 <?php
 
+use App\Config\Middlewares\RequiredEmployeeLoginMiddleware;
 use App\Config\Middlewares\RequiredLoginMiddleware;
 use App\Controllers\TeacherController;
 use Psr\Http\Message\ResponseInterface;
@@ -15,23 +16,23 @@ return function (App $app) {
 
       $response->getBody()->write(TeacherController::getTeachers($page, $size));
       return $response;
-    });
+    })->add(new RequiredEmployeeLoginMiddleware());
 
     $group->get('/adicionar', function (ServerRequestInterface $request, ResponseInterface $response) {
       $response->getBody()->write(TeacherController::getAddTeacher());
       return $response;
-    });
+    })->add(new RequiredEmployeeLoginMiddleware());
 
     $group->post('/adicionar', function (ServerRequestInterface $request, ResponseInterface $response) {
       $response->getBody()->write(TeacherController::setAddTeacher($request->getParsedBody()));
       return $response;
-    });
+    })->add(new RequiredEmployeeLoginMiddleware());
 
     $group->get('/{id}', function (ServerRequestInterface $request, ResponseInterface $response, array $args) {
       $id = $args['id'];
 
       $response->getBody()->write(TeacherController::getTeacher($id));
       return $response;
-    });
-  })->add(new RequiredLoginMiddleware());
+    })->add(new RequiredLoginMiddleware());
+  });
 };
