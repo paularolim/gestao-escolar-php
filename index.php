@@ -26,5 +26,6 @@ $app = AppFactory::create();
 (require './app/Config/Routes/studentRoutes.php')($app);
 (require './app/Config/Routes/subjectRoutes.php')($app);
 (require './app/Config/Routes/schoolClassRoutes.php')($app);
+(require './app/Config/Routes/scheduleRoutes.php')($app);
 
 $app->run();

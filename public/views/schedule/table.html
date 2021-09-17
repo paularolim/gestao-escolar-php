@@ -1,0 +1,48 @@
+<table class="w3-table-all">
+  <thead>
+    <tr>
+      <th>Horário</th>
+      <th>Domingo</th>
+      <th>Segunda</th>
+      <th>Terça</th>
+      <th>Quarta</th>
+      <th>Quinta</th>
+      <th>Sexta</th>
+      <th>Sábado</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{rows}}
+  </tbody>
+</table>
+
+<div
+  class="w3-panel w3-pale-blue w3-round-large w3-hide w3-padding"
+  id="popup"
+  style="position: relative"
+>
+  <h1 id="psubject" style="font-size: 18px"></h1>
+  <p>Professor: <span id="pteacher"></span></p>
+  <a href="#" class="w3-button w3-blue w3-round-xxlarge" id="pbutton">Editar</a>
+  <button class="w3-button w3-blue w3-round-xxlarge" id="pclose" onclick="closePopup()">Fechar</button>
+</div>
+
+<script>
+  let tds = document.querySelectorAll(".subject");
+  let panel = document.querySelector("#popup");
+
+  tds.forEach((item) => {
+    if (item.innerText !== "-") {
+      item.addEventListener("click", (event) => {
+        document.querySelector("#psubject").innerHTML = item.querySelector('#subject').innerText;
+        document.querySelector("#pteacher").innerHTML = item.querySelector('#teacher').innerText;
+        document.querySelector("#pbutton").href = `/horarios/${item.querySelector('#id').innerHTML}/editar`;
+        panel.classList.remove("w3-hide");
+      });
+    }
+  });
+
+  function closePopup() {
+    panel.classList.add('w3-hide')
+  }
+</script>

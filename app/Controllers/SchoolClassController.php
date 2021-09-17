@@ -44,11 +44,12 @@ class SchoolClassController
     );
 
     $content = View::render('schoolClass/details', [
+      'id' => $class->id,
       'number' => $class->number,
       'identifier' => $class->identifier,
       'maxStudents' => $class->maxStudents,
       'tableStudents' => $tableStudents->render(),
-      'totalStudents' => count($students)
+      'totalStudents' => count($students),
     ]);
 
     return LayoutController::getLayout('Turmas', $content);

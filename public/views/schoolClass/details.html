@@ -11,7 +11,9 @@
       </div>
 
       <div class="w3-container w3-padding">
-        <a href="#" class="w3-button w3-blue w3-round-xxlarge">Adicionar aluno</a>
+        <a href="#" class="w3-button w3-blue w3-round-xxlarge"
+          >Adicionar aluno</a
+        >
       </div>
     </div>
   </div>
@@ -19,7 +21,14 @@
   <div class="w3-col s9 w3-padding">
     <div class="w3-card-4 w3-margin-bottom">
       <div class="w3-container w3-blue">
-        <p>Horários</p>
+        <div class="w3-row">
+          <div class="w3-col s6">
+            <p>Horários</p>
+          </div>
+          <div class="w3-col s6">
+            <a href="/horarios/{{id}}" class="w3-btn w3-green w3-round-xxlarge w3-right">Adicionar horário</a>
+          </div>
+        </div>
       </div>
       <div class="w3-container w3-padding">
         <table class="w3-table-all">
@@ -105,9 +114,7 @@
       <div class="w3-container w3-blue">
         <p>Alunos</p>
       </div>
-      <div class="w3-container w3-padding">
-        {{tableStudents}}
-      </div>
+      <div class="w3-container w3-padding">{{tableStudents}}</div>
     </div>
   </div>
 </div>
