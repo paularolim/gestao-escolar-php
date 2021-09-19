@@ -33,6 +33,7 @@
 
   tds.forEach((item) => {
     if (item.innerText !== "-") {
+      item.style.cursor = "pointer"
       item.addEventListener("click", (event) => {
         document.querySelector("#psubject").innerHTML = item.querySelector('#subject').innerText;
         document.querySelector("#pteacher").innerHTML = item.querySelector('#teacher').innerText;

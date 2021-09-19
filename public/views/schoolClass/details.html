@@ -26,87 +26,12 @@
             <p>Horários</p>
           </div>
           <div class="w3-col s6">
-            <a href="/horarios/{{id}}" class="w3-btn w3-green w3-round-xxlarge w3-right">Adicionar horário</a>
+            <a href="/horarios/adicionar/{{id}}" class="w3-btn w3-green w3-round-xxlarge w3-right">Adicionar horário</a>
           </div>
         </div>
       </div>
       <div class="w3-container w3-padding">
-        <table class="w3-table-all">
-          <thead>
-            <tr>
-              <th></th>
-              <th>Domingo</th>
-              <th>Segunda</th>
-              <th>Terça</th>
-              <th>Quarta</th>
-              <th>Quinta</th>
-              <th>Sexta</th>
-              <th>Sábado</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>07:00 - 07:50</td>
-              <td>-</td>
-              <td>Matéria</td>
-              <td>Matéria</td>
-              <td>Matéria</td>
-              <td>Matéria</td>
-              <td>Matéria</td>
-              <td>-</td>
-            </tr>
-            <tr>
-              <td>07:50 - 08:40</td>
-              <td>-</td>
-              <td>Matéria</td>
-              <td>Matéria</td>
-              <td>Matéria</td>
-              <td>Matéria</td>
-              <td>Matéria</td>
-              <td>-</td>
-            </tr>
-            <tr>
-              <td>08:40 - 09:30</td>
-              <td>-</td>
-              <td>Matéria</td>
-              <td>Matéria</td>
-              <td>Matéria</td>
-              <td>Matéria</td>
-              <td>Matéria</td>
-              <td>-</td>
-            </tr>
-            <tr>
-              <td>09:30 - 10:20</td>
-              <td>-</td>
-              <td>Matéria</td>
-              <td>Matéria</td>
-              <td>Matéria</td>
-              <td>Matéria</td>
-              <td>Matéria</td>
-              <td>-</td>
-            </tr>
-            <tr>
-              <td>10:40 - 11:30</td>
-              <td>-</td>
-              <td>Matéria</td>
-              <td>Matéria</td>
-              <td>Matéria</td>
-              <td>Matéria</td>
-              <td>Matéria</td>
-              <td>-</td>
-            </tr>
-            <tr>
-              <td>11:30 - 12:20</td>
-              <td>-</td>
-              <td>Matéria</td>
-              <td>Matéria</td>
-              <td>Matéria</td>
-              <td>Matéria</td>
-              <td>Matéria</td>
-              <td>-</td>
-            </tr>
-          </tbody>
-        </table>
+        {{tableSchedules}}
       </div>
     </div>
 

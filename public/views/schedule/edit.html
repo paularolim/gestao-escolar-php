@@ -21,18 +21,54 @@
   <div class="w3-col s9 w3-padding">
     <div class="w3-card-4 w3-margin-bottom">
       <div class="w3-container w3-blue">
-        <div class="w3-col s6">
-          <p>Horários</p>
-        </div>
-        <div class="w3-col s6">
-          <a
-            href="/horarios/{{id}}"
-            class="w3-btn w3-green w3-round-xxlarge w3-right"
-            >Adicionar horário</a
-          >
-        </div>
+        <p>Horários</p>
       </div>
-      <div class="w3-container w3-padding">{{table}}</div>
+      <div class="w3-container w3-padding">
+        <form method="POST" action="/horarios/adicionar/{{id}}">
+          <div class="w3-row">
+            <div class="w3-col s2">
+              <label class="w3-text-blue">Inicio</label>
+              <input
+                class="w3-input w3-border"
+                type="text"
+                name="startTime"
+                required
+              />
+            </div>
+            <div class="w3-col s2">
+              <label class="w3-text-blue">Fim</label>
+              <input
+                class="w3-input w3-border"
+                type="text"
+                name="endTime"
+                required
+              />
+            </div>
+            <div class="w3-col s8">
+              <label class="w3-text-blue">Dia</label>
+              <select name="dayOfTheWeek" class="w3-input w3-border">
+                <option value="0">Domingo</option>
+                <option value="1">Segunda</option>
+                <option value="2">Terça</option>
+                <option value="3">Quarta</option>
+                <option value="4">Quinta</option>
+                <option value="5">Sexta</option>
+                <option value="6">Sábado</option>
+              </select>
+            </div>
+          </div>
+          <label class="w3-text-blue">Matéria</label>
+          <select name="subject" class="w3-input w3-border">
+            {{optionsSubject}}
+          </select>
+          
+          <label class="w3-text-blue">Professor</label>
+          <select name="teacher" class="w3-input w3-border">
+            {{optionsTeacher}}
+          </select>
+          <button class="w3-btn w3-blue w3-margin-top">Adicionar</button>
+        </form>
+      </div>
     </div>
   </div>
 </div>

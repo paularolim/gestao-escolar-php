@@ -36,6 +36,8 @@ class SchoolClassController
     $class = SchoolClass::getById($id);
     $students = SchoolClass::getStudents($id);
 
+    $tableSchedules = ScheduleController::getSchedules($id);
+
     $tableStudents = new Table(
       ['Nome', 'CPF', 'Ações'],
       ['name', 'document', 'button'],
@@ -48,6 +50,7 @@ class SchoolClassController
       'number' => $class->number,
       'identifier' => $class->identifier,
       'maxStudents' => $class->maxStudents,
+      'tableSchedules' => $tableSchedules,
       'tableStudents' => $tableStudents->render(),
       'totalStudents' => count($students),
     ]);

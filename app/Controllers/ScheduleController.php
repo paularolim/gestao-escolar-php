@@ -2,16 +2,62 @@
 
 namespace App\Controllers;
 
+use App\Models\Schedule;
 use App\Models\SchoolClass;
+use App\Models\Student;
+use App\Models\Subject;
+use App\Models\Teacher;
 use App\Utils\View;
 
 class ScheduleController
 {
-  public static function getSchedules(string $idClass)
+  public static function getAddSchedule(string $idClass)
   {
     $class = SchoolClass::getById($idClass);
-    $schedules = SchoolClass::getSchedules($idClass);
     $students = SchoolClass::getStudents($idClass);
+    $subjects = Subject::getAll(['id', 'name', 'workload']);
+    $teachers = Teacher::getAll(['id', 'name', 'document', 'formation']);
+
+    $optionSubject = '';
+    foreach ($subjects as $subject) {
+      $optionSubject .= View::render('schedule/select-option', [
+        'id' => $subject['id'],
+        'title' => $subject['name'] . ' - ' . $subject['workload'] . ' hrs'
+      ]);
+    }
+
+    $optionsTeacher = '';
+    foreach ($teachers as $teacher) {
+      $optionsTeacher .= View::render('schedule/select-option', [
+        'id' => $teacher['id'],
+        'title' => $teacher['name'] . ' (' . $teacher['document'] . ') - ' . $teacher['formation']
+      ]);
+    }
+
+    $content = View::render('schedule/edit', [
+      'id' => $class->id,
+      'number' => $class->number,
+      'identifier' => $class->identifier,
+      'maxStudents' => $class->maxStudents,
+      'totalStudents' => count($students),
+      'optionsSubject' => $optionSubject,
+      'optionsTeacher' => $optionsTeacher
+    ]);
+    return LayoutController::getLayout('Horários', $content);
+  }
+
+  public static function setAddSchedule(string $idClass, array $body)
+  {
+    $schedule = new Schedule($body['startTime'], $body['endTime'], $body['dayOfTheWeek'], $idClass, $body['subject'], $body['teacher']);
+    $schedule->store();
+
+    header('Location: /turmas/' . $idClass);
+    exit;
+  }
+
+  public static function getSchedules(string $idClass)
+  {
+    $schedules = SchoolClass::getSchedules($idClass);
 
     $generatedRows = self::generateRow($schedules);
 
@@ -58,19 +104,7 @@ class ScheduleController
       ]);
     }
 
-    $table = View::render('schedule/table', [
-      'rows' => $rows
-    ]);
-
-    $content = View::render('schedule/edit', [
-      'id' => $class->id,
-      'number' => $class->number,
-      'identifier' => $class->identifier,
-      'maxStudents' => $class->maxStudents,
-      'totalStudents' => count($students),
-      'table' => $table
-    ]);
-    return LayoutController::getLayout('Horários', $content);
+    return View::render('schedule/table', ['rows' => $rows]);
   }
 
   private static function rowStructure($startTime, $endTime)
