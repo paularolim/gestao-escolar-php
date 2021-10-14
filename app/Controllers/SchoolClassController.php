@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Config\Sessions\Session;
 use App\Models\SchoolClass;
 use App\Utils\Pagination;
 use App\Utils\Table;
@@ -13,7 +14,15 @@ class SchoolClassController
   {
     $totalClasses = SchoolClass::getCount();
     $pagination = new Pagination($page, $size, $totalClasses);
-    $classes = SchoolClass::getAll(null, null, null, $pagination->limit());
+
+    if (Session::whoIsLogged() === 'employee') {
+      $classes = SchoolClass::getAll(null, null, null, $pagination->limit());
+    } else if (Session::whoIsLogged() === 'teacher') {
+      $idTeacher = Session::getId();
+      $classes = SchoolClass::getAllFromTeacher($idTeacher);
+    } else {
+      $classes = [];
+    }
 
     $table = new Table(
       ['Série', 'Turma', 'Ano', 'Ações'],

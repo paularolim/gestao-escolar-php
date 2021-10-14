@@ -31,6 +31,18 @@ class SchoolClass
     return $result ? $result : [];
   }
 
+  public static function getAllFromTeacher(string $idTeacher, array $fields = null, string $where = null, string $order = null, string $limit = null): array
+  {
+    $result = (new Database(self::TABLE))->custom(
+      'select c.id, c.number, c.identifier, c.year
+      from classes c
+      inner join schedules s
+      where s.idClass = c.id and s.idTeacher = "' . $idTeacher . '"
+      group by c.id'
+    )->fetchAll(PDO::FETCH_ASSOC);
+    return $result ? $result : [];
+  }
+
   public static function getCount(): int
   {
     return (int)(new Database(self::TABLE))->select(['count(id) as total'])->fetchColumn(0);
