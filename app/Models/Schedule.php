@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Database\Database;
+use PDO;
 use Ramsey\Uuid\Uuid;
 
 class Schedule
@@ -25,6 +26,15 @@ class Schedule
     $this->idClass = $idClass;
     $this->idSubject = $idSubject;
     $this->idTeacher = $idTeacher;
+  }
+
+  public static function getAll(string $idClass)
+  {
+    return (new Database(self::TABLE))->custom('select sch.id, sub.name as subject, sch.idTeacher, t.name as teacher, sch.dayOfTheWeek, sch.startTime, sch.endTime
+    from schedules sch
+    inner join subjects sub, teachers t
+    where sch.idClass = "' . $idClass . '" and sch.idSubject = sub.id and sch.idTeacher = t.id
+    order by sch.startTime')->fetchAll(PDO::FETCH_ASSOC);
   }
 
   public function store(): string

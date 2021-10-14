@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use App\Models\Schedule;
 use App\Models\SchoolClass;
-use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Teacher;
 use App\Utils\View;
@@ -57,7 +56,7 @@ class ScheduleController
 
   public static function getSchedules(string $idClass)
   {
-    $schedules = SchoolClass::getSchedules($idClass);
+    $schedules = Schedule::getAll($idClass);
 
     $generatedRows = self::generateRow($schedules);
 

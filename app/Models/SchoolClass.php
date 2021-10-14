@@ -49,13 +49,4 @@ class SchoolClass
 
     return $this->id;
   }
-
-  public static function getSchedules(string $id)
-  {
-    return (new Database('schedules'))->custom('select sch.id, sub.name as subject, sch.idTeacher, t.name as teacher, sch.dayOfTheWeek, sch.startTime, sch.endTime
-    from schedules sch
-    inner join subjects sub, teachers t
-    where sch.idClass = "' . $id . '" and sch.idSubject = sub.id and sch.idTeacher = t.id
-    order by sch.startTime')->fetchAll(PDO::FETCH_ASSOC);
-  }
 }
