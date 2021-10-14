@@ -12,14 +12,17 @@ class SchoolClassController
 {
   public static function getSchoolClasses(int $page = 1, int $size = 20): string
   {
-    $totalClasses = SchoolClass::getCount();
-    $pagination = new Pagination($page, $size, $totalClasses);
-
     if (Session::whoIsLogged() === 'employee') {
+      $totalClasses = SchoolClass::getCount();
+      $pagination = new Pagination($page, $size, $totalClasses);
+
       $classes = SchoolClass::getAll(null, null, null, $pagination->limit());
     } else if (Session::whoIsLogged() === 'teacher') {
       $idTeacher = Session::getId();
+
+      $pagination = new Pagination(1, 1, 1);
       $classes = SchoolClass::getAllFromTeacher($idTeacher);
+      $totalClasses = count($classes);
     } else {
       $classes = [];
     }
