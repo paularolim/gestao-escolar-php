@@ -31,4 +31,15 @@ class Session
       throw new \Error('User is not logged');
     }
   }
+
+  public static function getName()
+  {
+    self::init();
+
+    if (isset($_SESSION['user']['name'])) {
+      return $_SESSION['user']['name'];
+    } else {
+      throw new \Error('User is not logged');
+    }
+  }
 }

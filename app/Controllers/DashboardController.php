@@ -2,15 +2,25 @@
 
 namespace App\Controllers;
 
-use App\Utils\View;
+use App\Config\Sessions\EmployeeSession;
+use App\Config\Sessions\Session;
+use App\Config\Sessions\TeacherSession;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Slim\Views\Twig;
 
 class DashboardController
 {
-  public static function getDashboard()
+  public static function getDashboard(ServerRequestInterface $request, ResponseInterface $response)
   {
-    $profile = $_SESSION['user']['type'];
-    
-    $content = View::render('pages/dashboard-'.$profile);
-    return LayoutController::getLayout('Dashboard', $content);
+    $view = Twig::fromRequest($request);
+
+    if (EmployeeSession::isLogged() || TeacherSession::isLogged()) {
+      return $view->render($response, 'Dashboard/' . Session::whoIsLogged() . '.html', [
+        'name' => Session::getName()
+      ]);
+    } else {
+      return $view->render($response, 'Error/not-found.html');
+    }
   }
 }
