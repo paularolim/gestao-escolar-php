@@ -6,7 +6,6 @@ use App\Config\Sessions\EmployeeSession;
 use App\Config\Sessions\Session;
 use App\Models\Employee;
 use App\Utils\Pagination;
-use App\Utils\View;
 use Error;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -31,16 +30,13 @@ class EmployeeController
     $view = Twig::fromRequest($request);
 
     if (EmployeeSession::isLogged()) {
-      $id = Session::getId();
-      $type = ['type' => Session::whoIsLogged()];
-
       $total = ['total' => Employee::getCount()];
       $pagination = new Pagination($page, $size, $total['total']);
       $pages = $pagination->getInfo();
       $employees = ['employees' => Employee::getAll(['id', 'name', 'document'], null, null, $pagination->limit())];
 
-      $args = (array)Employee::getById($id);
-      $args = array_merge($args, $type, $employees, $total, $pages);
+      $args = self::getUserInfo();
+      $args = array_merge($args, $employees, $total, $pages);
 
       return $view->render($response, 'Employee/list.html', $args);
     } else {
@@ -71,11 +67,7 @@ class EmployeeController
     $view = Twig::fromRequest($request);
 
     if (EmployeeSession::isLogged()) {
-      $id = Session::getId();
-      $type = ['type' => Session::whoIsLogged()];
-
-      $args = (array)Employee::getById($id);
-      $args = array_merge($args, $type);
+      $args = self::getUserInfo();
 
       return $view->render($response, 'Employee/add.html', $args);
     } else {
@@ -100,12 +92,10 @@ class EmployeeController
       header('Location: /funcionarios');
       exit;
     } catch (Error $e) {
-      $id = Session::getId();
-      $type = ['type' => Session::whoIsLogged()];
       $error = ['error' => 'Não foi possível adicionar este funcionário'];
 
-      $args = (array)Employee::getById($id);
-      $args = array_merge($args, $type, $error);
+      $args = self::getUserInfo();
+      $args = array_merge($args, $error);
 
       return $view->render($response, 'Employee/add.html', $args);
     }
