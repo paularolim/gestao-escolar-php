@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Database\Database;
+use Error;
 use PDO;
+use PDOException;
 use Ramsey\Uuid\Uuid;
 
 class Employee extends Person
@@ -17,7 +19,7 @@ class Employee extends Person
   public static function getByDocument(string $document): ?Person
   {
     $result = (new Database(self::$table))->select('*', 'document = "' . $document . '"')->fetchObject(self::class);
-    return $result ? $result : null; 
+    return $result ? $result : null;
   }
 
   public static function getById(string $id, array $fields = null): Person
@@ -40,7 +42,11 @@ class Employee extends Person
     $this->id = Uuid::uuid4();
     $this->password = password_hash($this->document, PASSWORD_DEFAULT);
 
-    (new Database(self::$table))->insert((array)$this);
+    try {
+      (new Database(self::$table))->insert((array)$this);
+    } catch (PDOException $e) {
+      throw new Error('Não foi possível adicionar o funcionário');
+    }
 
     return $this->id;
   }

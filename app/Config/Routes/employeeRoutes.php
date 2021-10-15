@@ -18,8 +18,7 @@ return function (App $app) {
     });
 
     $group->post('/adicionar', function (ServerRequestInterface $request, ResponseInterface $response): ResponseInterface {
-      EmployeeController::setAddEmployee($request->getParsedBody());
-      return $response;
+      return EmployeeController::setAddEmployee($request, $response);
     });
 
     $group->get('/{id}', function (ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {

@@ -7,6 +7,7 @@ use App\Config\Sessions\Session;
 use App\Models\Employee;
 use App\Utils\Pagination;
 use App\Utils\View;
+use Error;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Views\Twig;
@@ -68,16 +69,31 @@ class EmployeeController
     }
   }
 
-  public static function setAddEmployee(array $body)
+  public static function setAddEmployee(ServerRequestInterface $request, ResponseInterface $response)
   {
+    $view = Twig::fromRequest($request);
+
+    $body = $request->getParsedBody();
+
     $employee = new Employee();
     $employee->name = $body['name'];
     $employee->dateOfBirth = $body['dateOfBirth'];
     $employee->document = $body['document'];
     $employee->email = $body['email'];
-    $employee->store();
 
-    header('Location: /funcionarios');
-    exit;
+    try {
+      $employee->store();
+      header('Location: /funcionarios');
+      exit;
+    } catch (Error $e) {
+      $id = Session::getId();
+      $type = ['type' => Session::whoIsLogged()];
+      $error = ['error' => 'Não foi possível adicionar este funcionário'];
+
+      $args = (array)Employee::getById($id);
+      $args = array_merge($args, $type, $error);
+
+      return $view->render($response, 'Employee/add.html', $args);
+    }
   }
 }
