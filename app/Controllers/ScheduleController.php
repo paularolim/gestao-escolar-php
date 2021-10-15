@@ -9,7 +9,7 @@ use App\Models\Schedule;
 use App\Models\SchoolClass;
 use App\Models\Subject;
 use App\Models\Teacher;
-use App\Utils\View;
+use Error;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Views\Twig;
@@ -38,13 +38,40 @@ class ScheduleController
     }
   }
 
-  public static function setAddSchedule(string $idClass, array $body)
+  public static function setAddSchedule(ServerRequestInterface $request, ResponseInterface $response, array $params): ResponseInterface
   {
-    $schedule = new Schedule($body['startTime'], $body['endTime'], $body['dayOfTheWeek'], $idClass, $body['subject'], $body['teacher']);
-    $schedule->store();
+    $idClass = $params['idClass'];
+    $body = $request->getParsedBody();
 
-    header('Location: /turmas/' . $idClass);
-    exit;
+    $view = Twig::fromRequest($request);
+
+    if (EmployeeSession::isLogged()) {
+      $schedule = new Schedule(
+        $body['startTime'],
+        $body['endTime'],
+        $body['dayOfTheWeek'],
+        $idClass,
+        $body['subject'],
+        $body['teacher']
+      );
+
+      try {
+        $schedule->store();
+
+        header('Location: /turmas/' . $idClass);
+        exit;
+      } catch (Error $error) {
+
+        $error = ['error' => 'Não foi possível adicionar este horário'];
+
+        $args = Session::getUser();
+        $args = array_merge($args, $error);
+
+        return $view->render($response, 'Schedule/add.html', $args);
+      }
+    } else {
+      return $view->render($response, 'Error/not-found.html');
+    }
   }
 
   public static function getSchedules(string $schoolClassId): array

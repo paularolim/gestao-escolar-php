@@ -18,17 +18,7 @@ return function (App $app) {
     });
 
     $group->post('/adicionar/{idClass}', function (ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
-      $idClass = $args['idClass'];
-
-      $response->getBody()->write(ScheduleController::setAddSchedule($idClass, $request->getParsedBody()));
-      return $response;
+      return ScheduleController::setAddSchedule($request, $response, $args);
     });
-
-    // $group->get('/{idClass}', function (ServerRequestInterface $request, ResponseInterface $response, array $args) : ResponseInterface{
-    //   $idClass = $args['idClass'];
-
-    //   $response->getBody()->write(ScheduleController::getSchedules($idClass));
-    //   return $response;
-    // });
   })->add(new RequiredLoginMiddleware());
 };
