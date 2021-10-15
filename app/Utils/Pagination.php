@@ -29,6 +29,16 @@ class Pagination
     return $this->startItem . ',' . $this->size;
   }
 
+  public function getInfo(): array
+  {
+    return [
+      'current' => $this->page,
+      'prev' => $this->page === 1 ? 1 : $this->page - 1,
+      'next' => $this->page === $this->totalPages ? $this->page : $this->page + 1,
+      'size' => $this->size
+    ];
+  }
+
   public function render(string $baseURL)
   {
     $rightButton = View::render('layouts/components/pagination-right-button', [

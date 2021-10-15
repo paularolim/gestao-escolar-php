@@ -10,11 +10,7 @@ use Slim\Routing\RouteCollectorProxy;
 return function (App $app) {
   $app->group('/funcionarios', function (RouteCollectorProxy $group) {
     $group->get('', function (ServerRequestInterface $request, ResponseInterface $response) {
-      $page = $request->getQueryParams()['page'] ?? 1;
-      $size = $request->getQueryParams()['size'] ?? 20;
-
-      $response->getBody()->write(EmployeeController::getEmployees($page, $size));
-      return $response;
+      return EmployeeController::getEmployees($request, $response);
     });
 
     $group->get('/adicionar', function (ServerRequestInterface $request, ResponseInterface $response, array $args) {

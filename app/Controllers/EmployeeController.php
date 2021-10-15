@@ -2,33 +2,39 @@
 
 namespace App\Controllers;
 
+use App\Config\Sessions\EmployeeSession;
+use App\Config\Sessions\Session;
 use App\Models\Employee;
 use App\Utils\Pagination;
-use App\Utils\Table;
 use App\Utils\View;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Slim\Views\Twig;
 
 class EmployeeController
 {
-  public static function getEmployees(int $page = 1, int $size = 20): string
+  public static function getEmployees(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
   {
-    $totalEmployees = Employee::getCount();
-    $pagination = new Pagination($page, $size, $totalEmployees);
-    $employees = Employee::getAll(['id', 'name', 'document'], null, null, $pagination->limit());
+    $page = $request->getQueryParams()['page'] ?? 1;
+    $size = $request->getQueryParams()['size'] ?? 20;
+    $view = Twig::fromRequest($request);
 
-    $table = new Table(
-      ['Nome', 'CPF', 'Ações'],
-      ['name', 'document', 'button'],
-      $employees,
-      '/funcionarios'
-    );
+    if (EmployeeSession::isLogged()) {
+      $id = Session::getId();
+      $type = ['type' => Session::whoIsLogged()];
 
-    $content = View::render('employee/list', [
-      'total' => $totalEmployees,
-      'table' => $table->render(),
-      'pages' => $pagination->render('/funcionarios')
-    ]);
+      $total = ['total' => Employee::getCount()];
+      $pagination = new Pagination($page, $size, $total['total']);
+      $pages = $pagination->getInfo();
+      $employees = ['employees' => Employee::getAll(['id', 'name', 'document'], null, null, $pagination->limit())];
 
-    return LayoutController::getLayout('Funcionários', $content);
+      $args = (array)Employee::getById($id);
+      $args = array_merge($args, $type, $employees, $total, $pages);
+
+      return $view->render($response, 'Employee/list.html', $args);
+    } else {
+      return $view->render($response, 'Error/not-found.html');
+    }
   }
 
   public static function getEmployee(string $id)
