@@ -51,10 +51,21 @@ class EmployeeController
     return LayoutController::getLayout('Funcionários', $content);
   }
 
-  public static function getAddEmployee()
+  public static function getAddEmployee(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
   {
-    $content = View::render('employee/add');
-    return LayoutController::getLayout('Funcionários', $content);
+    $view = Twig::fromRequest($request);
+
+    if (EmployeeSession::isLogged()) {
+      $id = Session::getId();
+      $type = ['type' => Session::whoIsLogged()];
+
+      $args = (array)Employee::getById($id);
+      $args = array_merge($args, $type);
+
+      return $view->render($response, 'Employee/add.html', $args);
+    } else {
+      return $view->render($response, 'Error/not-found.html');
+    }
   }
 
   public static function setAddEmployee(array $body)
