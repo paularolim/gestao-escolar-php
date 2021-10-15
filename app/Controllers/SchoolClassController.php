@@ -2,11 +2,16 @@
 
 namespace App\Controllers;
 
+use App\Config\Sessions\EmployeeSession;
 use App\Config\Sessions\Session;
+use App\Config\Sessions\TeacherSession;
 use App\Models\SchoolClass;
 use App\Utils\Pagination;
 use App\Utils\Table;
 use App\Utils\View;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Slim\Views\Twig;
 
 class SchoolClassController
 {
@@ -43,31 +48,24 @@ class SchoolClassController
     return LayoutController::getLayout('Turmas', $content);
   }
 
-  public static function getSchoolClass(string $id)
+  public static function getSchoolClass(ServerRequestInterface $request, ResponseInterface $response, array $params)
   {
-    $class = SchoolClass::getById($id);
-    $students = SchoolClass::getStudents($id);
+    $schoolClassId = $params['id'];
+    $view = Twig::fromRequest($request);
 
-    $tableSchedules = ScheduleController::getSchedules($id);
+    if (EmployeeSession::isLogged() || TeacherSession::isLogged()) {
+      $schoolClass = ['schoolClass' => (array)SchoolClass::getById($schoolClassId)];
+      $students = ['students' => SchoolClass::getStudents($schoolClassId)];
+      $totalStudents = ['totalStudents' => count($students['students'])];
+      $schedules = ScheduleController::getSchedules($schoolClassId);
 
-    $tableStudents = new Table(
-      ['Nome', 'CPF', 'Ações'],
-      ['name', 'document', 'button'],
-      $students,
-      '/alunos'
-    );
+      $args = Session::getUser();
+      $args = array_merge($args, $schoolClass, $totalStudents, $students, $schedules);
 
-    $content = View::render('schoolClass/details', [
-      'id' => $class->id,
-      'number' => $class->number,
-      'identifier' => $class->identifier,
-      'maxStudents' => $class->maxStudents,
-      'tableSchedules' => $tableSchedules,
-      'tableStudents' => $tableStudents->render(),
-      'totalStudents' => count($students),
-    ]);
-
-    return LayoutController::getLayout('Turmas', $content);
+      return $view->render($response, 'SchoolClass/details.html', $args);
+    } else {
+      return $view->render($response, 'Error/not-found.html');
+    }
   }
 
   public static function getAddSchoolClass()

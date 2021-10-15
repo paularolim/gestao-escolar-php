@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Config\Sessions\EmployeeSession;
 use App\Config\Sessions\Session;
+use App\Config\Sessions\TeacherSession;
 use App\Models\Schedule;
 use App\Models\SchoolClass;
 use App\Models\Subject;
@@ -46,115 +47,32 @@ class ScheduleController
     exit;
   }
 
-  public static function getSchedules(string $idClass)
+  public static function getSchedules(string $schoolClassId): array
   {
-    $schedules = Schedule::getAll($idClass);
+    $schedules = Schedule::getAll($schoolClassId);
 
-    $generatedRows = self::generateRow($schedules);
-
-    $rows = '';
-    for ($i = 0; $i < count($generatedRows); $i++) {
-      $rows .= View::render('schedule/table-tr', [
-        'startTime' => $generatedRows[$i]['startTime'],
-        'endTime' => $generatedRows[$i]['endTime'],
-
-        'id0' => $generatedRows[$i][0]['id'],
-        'subject0' => $generatedRows[$i][0]['subject'],
-        'idTeacher0' => $generatedRows[$i][0]['idTeacher'],
-        'teacher0' => $generatedRows[$i][0]['teacher'],
-
-        'id1' => $generatedRows[$i][1]['id'],
-        'subject1' => $generatedRows[$i][1]['subject'],
-        'idTeacher1' => $generatedRows[$i][1]['idTeacher'],
-        'teacher1' => $generatedRows[$i][1]['teacher'],
-
-        'id2' => $generatedRows[$i][2]['id'],
-        'subject2' => $generatedRows[$i][2]['subject'],
-        'idTeacher2' => $generatedRows[$i][2]['idTeacher'],
-        'teacher2' => $generatedRows[$i][2]['teacher'],
-
-        'id3' => $generatedRows[$i][3]['id'],
-        'subject3' => $generatedRows[$i][3]['subject'],
-        'idTeacher3' => $generatedRows[$i][3]['idTeacher'],
-        'teacher3' => $generatedRows[$i][3]['teacher'],
-
-        'id4' => $generatedRows[$i][4]['id'],
-        'subject4' => $generatedRows[$i][4]['subject'],
-        'idTeacher4' => $generatedRows[$i][4]['idTeacher'],
-        'teacher4' => $generatedRows[$i][4]['teacher'],
-
-        'id5' => $generatedRows[$i][5]['id'],
-        'subject5' => $generatedRows[$i][5]['subject'],
-        'idTeacher5' => $generatedRows[$i][5]['idTeacher'],
-        'teacher5' => $generatedRows[$i][5]['teacher'],
-
-        'id6' => $generatedRows[$i][6]['id'],
-        'subject6' => $generatedRows[$i][6]['subject'],
-        'idTeacher6' => $generatedRows[$i][6]['idTeacher'],
-        'teacher6' => $generatedRows[$i][6]['teacher']
-      ]);
-    }
-
-    return View::render('schedule/table', ['rows' => $rows]);
+    $generatedRows = ['schedules' => self::generateRow($schedules)];
+    return $generatedRows;
   }
 
-  public static function getSchedulesFromUser()
+  public static function getSchedulesFromUser(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
   {
-    if (Session::whoIsLogged() !== 'teacher') {
-      header('Location: /');
-      exit;
+    $view = Twig::fromRequest($request);
+
+    if (TeacherSession::isLogged()) {
+      $idTeacher = Session::getId();
+      $schedules = Schedule::getAllFromTeacher($idTeacher);
+
+
+      $generatedRows = ['rows' => self::generateRow($schedules)];
+
+      $args = Session::getUser();
+      $args = array_merge($args, $generatedRows);
+
+      return $view->render($response, 'Schedule/schedule.html', $args);
+    } else {
+      return $view->render($response, 'Error/not-found.html');
     }
-
-    $idTeacher = Session::getId();
-    $schedules = Schedule::getAllFromTeacher($idTeacher);
-
-    $generatedRows = self::generateRow($schedules);
-
-    $rows = '';
-    for ($i = 0; $i < count($generatedRows); $i++) {
-      $rows .= View::render('schedule/table-tr', [
-        'startTime' => $generatedRows[$i]['startTime'],
-        'endTime' => $generatedRows[$i]['endTime'],
-
-        'id0' => $generatedRows[$i][0]['id'],
-        'subject0' => $generatedRows[$i][0]['subject'],
-        'idTeacher0' => $generatedRows[$i][0]['idTeacher'],
-        'teacher0' => $generatedRows[$i][0]['teacher'],
-
-        'id1' => $generatedRows[$i][1]['id'],
-        'subject1' => $generatedRows[$i][1]['subject'],
-        'idTeacher1' => $generatedRows[$i][1]['idTeacher'],
-        'teacher1' => $generatedRows[$i][1]['teacher'],
-
-        'id2' => $generatedRows[$i][2]['id'],
-        'subject2' => $generatedRows[$i][2]['subject'],
-        'idTeacher2' => $generatedRows[$i][2]['idTeacher'],
-        'teacher2' => $generatedRows[$i][2]['teacher'],
-
-        'id3' => $generatedRows[$i][3]['id'],
-        'subject3' => $generatedRows[$i][3]['subject'],
-        'idTeacher3' => $generatedRows[$i][3]['idTeacher'],
-        'teacher3' => $generatedRows[$i][3]['teacher'],
-
-        'id4' => $generatedRows[$i][4]['id'],
-        'subject4' => $generatedRows[$i][4]['subject'],
-        'idTeacher4' => $generatedRows[$i][4]['idTeacher'],
-        'teacher4' => $generatedRows[$i][4]['teacher'],
-
-        'id5' => $generatedRows[$i][5]['id'],
-        'subject5' => $generatedRows[$i][5]['subject'],
-        'idTeacher5' => $generatedRows[$i][5]['idTeacher'],
-        'teacher5' => $generatedRows[$i][5]['teacher'],
-
-        'id6' => $generatedRows[$i][6]['id'],
-        'subject6' => $generatedRows[$i][6]['subject'],
-        'idTeacher6' => $generatedRows[$i][6]['idTeacher'],
-        'teacher6' => $generatedRows[$i][6]['teacher']
-      ]);
-    }
-
-    $view = View::render('schedule/table', ['rows' => $rows]);
-    return LayoutController::getLayout('', $view);
   }
 
   private static function rowStructure($startTime, $endTime)
@@ -162,8 +80,8 @@ class ScheduleController
     return [
       'startTime' => $startTime,
       'endTime' => $endTime,
-      '0' => ['id' => '', 'subject' => '-', 'idTeacher' => '', 'teacher' => '-'],
-      '1' => ['id' => '', 'subject' => '-', 'idTeacher' => '', 'teacher' => '-'],
+      '0' => '-',
+      '1' => '-',
       '2' => '-',
       '3' => '-',
       '4' => '-',

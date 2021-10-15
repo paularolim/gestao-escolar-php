@@ -10,8 +10,7 @@ use Slim\Routing\RouteCollectorProxy;
 return function (App $app) {
   $app->group('/horarios', function (RouteCollectorProxy $group) {
     $group->get('', function (ServerRequestInterface $request, ResponseInterface $response): ResponseInterface {
-      $response->getBody()->write(ScheduleController::getSchedulesFromUser());
-      return $response;
+      return ScheduleController::getSchedulesFromUser($request, $response);
     });
 
     $group->get('/adicionar/{idClass}', function (ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {

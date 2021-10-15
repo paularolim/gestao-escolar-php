@@ -1,0 +1,36 @@
+{% extends "/Layout/layout.html" %}{% block body %}
+<table class="w3-table-all w3-hoverable w3-margin-top">
+  <thead>
+    <tr class="w3-blue">
+      <th>Horário</th>
+      <th>Domingo</th>
+      <th>Segunda</th>
+      <th>Terça</th>
+      <th>Quarta</th>
+      <th>Quinta</th>
+      <th>Sexta</th>
+      <th>Sábado</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr>
+      <td>{{row['startTime']}} - {{row['endTime']}}</td>
+      {% for i in 0..6 %}
+      <td>
+        {% if row[i] == '-' %}
+        <span>-</span>
+        {% else %}
+        <span id="id" class="w3-hide">{{row[i]['id']}}</span>
+        <span id="subject">{{row[i]['subject']}}</span>
+        <a href="/professores/{{row[i]['idTeacher']}}" class="w3-hide">
+          <span id="teacher">{{row[i]['teacher']}}</span>
+        </a>
+        {% endif %}
+      </td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,157 @@
+{% extends "/Layout/layout.html" %}{% block body %}
+<div class="w3-row w3-margin-top">
+  <div class="w3-col s3 w3-padding">
+    <div class="w3-card-4">
+      <div class="w3-container w3-center w3-blue">
+        <p>{{schoolClass['number']}}-{{schoolClass['identifier']}}</p>
+      </div>
+
+      <div class="w3-container">
+        <p>
+          Total de alunos: {{totalStudents}} / {{schoolClass['maxStudents']}}
+        </p>
+        <p>Total de matérias: {{totalSubjects}}</p>
+      </div>
+
+      <div class="w3-container w3-padding">
+        <a href="#" class="w3-button w3-blue w3-round-xxlarge"
+          >Adicionar aluno</a
+        >
+      </div>
+    </div>
+  </div>
+
+  <div class="w3-col s9 w3-padding">
+    <div class="w3-card-4 w3-margin-bottom">
+      <div class="w3-container w3-blue">
+        <div class="w3-row">
+          <div class="w3-col s6">
+            <p>Horários</p>
+          </div>
+          <div class="w3-col s6">
+            {% if type == 'employee' %}
+            <a
+              href="/horarios/adicionar/{{schoolClass['id']}}"
+              class="w3-btn w3-green w3-round-xxlarge w3-right"
+              >Adicionar horário</a
+            >
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="w3-container w3-padding">
+        <table class="w3-table-all w3-hoverable w3-margin-top">
+          <thead>
+            <tr class="w3-blue">
+              <th>Horário</th>
+              <th>Domingo</th>
+              <th>Segunda</th>
+              <th>Terça</th>
+              <th>Quarta</th>
+              <th>Quinta</th>
+              <th>Sexta</th>
+              <th>Sábado</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for schedule in schedules %}
+            <tr>
+              <td>{{schedule['startTime']}} - {{schedule['endTime']}}</td>
+              {% for i in 0..6 %}
+              <td class="subject">
+                {% if schedule[i] == '-' %}
+                <span>-</span>
+                {% else %}
+                <span id="id" class="w3-hide">{{schedule[i]['id']}}</span>
+                <span id="subject">{{schedule[i]['subject']}}</span>
+                <span id="teacher" class="w3-hide"
+                  >{{schedule[i]['teacher']}}</span
+                >
+                {% endif %}
+              </td>
+              {% endfor %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <div
+          class="w3-panel w3-pale-blue w3-round-large w3-hide w3-padding"
+          id="popup"
+          style="position: relative"
+        >
+          <h1 id="psubject" style="font-size: 18px"></h1>
+          <p>Professor: <span id="pteacher"></span></p>
+          <a href="#" class="w3-button w3-blue w3-round-xxlarge" id="pbutton"
+            >Editar</a
+          >
+          <button
+            class="w3-button w3-blue w3-round-xxlarge"
+            id="pclose"
+            onclick="closePopup()"
+          >
+            Fechar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="w3-card-4">
+      <div class="w3-container w3-blue">
+        <p>Alunos</p>
+      </div>
+      <div class="w3-container w3-padding">
+        <table class="w3-table-all w3-hoverable w3-margin-top">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Documento</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for student in students %}
+            <tr>
+              <td>{{student['name']}}</td>
+              <td>{{student['document']}}</td>
+              <td>
+                <a
+                  href="/alunos/{{student['id']}}"
+                  class="w3-button w3-blue w3-tiny w3-round-xxlarge"
+                  >Ver</a
+                >
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let tds = document.querySelectorAll(".subject");
+  let panel = document.querySelector("#popup");
+
+  tds.forEach((item) => {
+    if (item.innerText !== "-") {
+      item.style.cursor = "pointer";
+      item.addEventListener("click", (event) => {
+        document.querySelector("#psubject").innerHTML =
+          item.querySelector("#subject").innerText;
+        document.querySelector("#pteacher").innerHTML =
+          item.querySelector("#teacher").innerText;
+        document.querySelector("#pbutton").href = `/horarios/${
+          item.querySelector("#id").innerHTML
+        }/editar`;
+        panel.classList.remove("w3-hide");
+      });
+    }
+  });
+
+  function closePopup() {
+    panel.classList.add("w3-hide");
+  }
+</script>
+{% endblock %}

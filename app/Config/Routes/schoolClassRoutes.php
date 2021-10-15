@@ -27,11 +27,8 @@ return function (App $app) {
       return $response;
     });
 
-    $group->get('/{id}', function (ServerRequestInterface $request, ResponseInterface $response, array $args) {
-      $id = $args['id'];
-
-      $response->getBody()->write(SchoolClassController::getSchoolClass($id));
-      return $response;
+    $group->get('/{id}', function (ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
+      return SchoolClassController::getSchoolClass($request, $response, $args);
     });
   })->add(new RequiredLoginMiddleware());
 };
