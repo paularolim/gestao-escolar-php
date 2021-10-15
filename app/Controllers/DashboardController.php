@@ -17,7 +17,8 @@ class DashboardController
 
     if (EmployeeSession::isLogged() || TeacherSession::isLogged()) {
       return $view->render($response, 'Dashboard/' . Session::whoIsLogged() . '.html', [
-        'name' => Session::getName()
+        'name' => Session::getName(),
+        'type' => Session::whoIsLogged()
       ]);
     } else {
       return $view->render($response, 'Error/not-found.html');

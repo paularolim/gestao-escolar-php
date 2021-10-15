@@ -21,6 +21,17 @@ class Session
     }
   }
 
+  public static function getUser()
+  {
+    self::init();
+
+    if (isset($_SESSION['user']['id'])) {
+      return $_SESSION['user'];
+    } else {
+      throw new \Error('User is not logged');
+    }
+  }
+
   public static function getId()
   {
     self::init();

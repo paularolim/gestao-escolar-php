@@ -1,0 +1,30 @@
+{% extends "/Layout/layout.html" %} {% block body %}
+<div class="w3-row w3-margin-top">
+  <div class="w3-col s3 w3-padding">
+    <div class="w3-card-4">
+      <img
+        src="https://i1.wp.com/terracoeconomico.com.br/wp-content/uploads/2019/01/default-user-image.png?ssl=1"
+        alt="Perfil"
+        style="max-width: 100%"
+      />
+      <div class="w3-container w3-center w3-blue">
+        <p>{{name}}</p>
+      </div>
+      <div class="w3-container">
+        <p>Documento: {{document}}</p>
+        <p>Data de Nascimento: {{dateOfBirth}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="w3-col s9 w3-padding">
+    <div class="w3-card-4 w3-margin-bottom">
+      <div class="w3-container w3-blue">
+        <p>Contato</p>
+      </div>
+      <div class="w3-container">
+        <p>Email: {{email}}</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

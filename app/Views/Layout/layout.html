@@ -10,7 +10,9 @@
   </head>
 
   <body>
-    {% block header %}{% endblock %}
+    {% if type == 'employee' %} {{include('/Layout/header-employee.html')}} {%
+    endif %} {% if type == 'teacher' %}
+    {{include('/Layout/header-teacher.html')}} {% endif %}
     <div class="w3-container">{% block body %}{% endblock %}</div>
   </body>
 </html>

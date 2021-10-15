@@ -2,28 +2,34 @@
 
 namespace App\Controllers;
 
+use App\Config\Sessions\Session;
+use App\Config\Sessions\EmployeeSession;
+use App\Config\Sessions\TeacherSession;
 use App\Models\Employee;
-use App\Models\Student;
 use App\Models\Teacher;
-use App\Utils\View;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Slim\Views\Twig;
 
 class ProfileController
 {
-  public static function getProfile()
+  public static function getProfile(ServerRequestInterface $request, ResponseInterface $response)
   {
-    $session = $_SESSION['user'];
-    $profile = $session['type'];
+    $view = Twig::fromRequest($request);
 
-    if ($profile === 'employee') $user = Employee::getById($session['id']);
-    else if ($profile === 'teacher') $user = Teacher::getById($session['id']);
-    else $user = Student::getById($session['id']);
+    if (EmployeeSession::isLogged()) {
+      $id = Session::getId();
+      $args = (array)Employee::getById($id);
+    } else if (TeacherSession::isLogged()) {
+      $id = Session::getId();
+      $args = (array)Teacher::getById($id);
+    } else {
+      return $view->render($response, 'Error/not-found.html');
+    }
 
-    $content = View::render('pages/profile', [
-      'name' => $user->name,
-      'document' => $user->document,
-      'dateOfBirth' => $user->dateOfBirth,
-      'email' => $user->email
-    ]);
-    return LayoutController::getLayout('Perfil', $content);
+    $type = ['type' => Session::whoIsLogged()];
+    $args = array_merge($args, $type);
+
+    return $view->render($response, 'Profile/profile.html', $args);
   }
 }
