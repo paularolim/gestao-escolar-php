@@ -32,8 +32,7 @@ return function (App $app) {
   });
 
   $app->get('/dashboard', function (ServerRequestInterface $request, ResponseInterface $response) {
-    $response->getBody()->write(DashboardController::getDashboard());
-    return $response;
+    return DashboardController::getDashboard($request, $response);
   })->add(new RequiredLoginMiddleware());
 
   $app->get('/perfil', function (ServerRequestInterface $request, ResponseInterface $response) {

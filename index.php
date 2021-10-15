@@ -2,6 +2,8 @@
 
 use Slim\Factory\AppFactory;
 use Symfony\Component\Dotenv\Dotenv;
+use Slim\Views\Twig;
+use Slim\Views\TwigMiddleware;
 
 require __DIR__ . '/vendor/autoload.php';
 
@@ -15,8 +17,10 @@ define('DBUSER', $_ENV['DBUSER']);
 define('DBPASS', $_ENV['DBPASS']);
 
 $app = AppFactory::create();
+$twig = Twig::create('app/Views', ['cache' => false]);
 
 // middlewares
+$app->add(TwigMiddleware::create($app, $twig));
 (require('./app/Config/Middlewares/ErrorMiddleware.php'))($app);
 
 // routes
