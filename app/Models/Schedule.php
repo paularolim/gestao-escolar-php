@@ -37,6 +37,16 @@ class Schedule
     order by sch.startTime')->fetchAll(PDO::FETCH_ASSOC);
   }
 
+  public static function getAllFromTeacher(string $idTeacher)
+  {
+    return (new Database(self::TABLE))->custom('
+    select s.id, s.idSubject, s.idTeacher, s.idClass, s.dayOfTheWeek, s.startTime, s.endTime, su.name as subject
+    from schedules s
+    inner join teachers t, subjects su
+    where s.idTeacher = t.id and s.idSubject = su.id and t.id = "' . $idTeacher . '"
+    ')->fetchAll(PDO::FETCH_ASSOC);
+  }
+
   public function store(): string
   {
     $this->id = Uuid::uuid4();

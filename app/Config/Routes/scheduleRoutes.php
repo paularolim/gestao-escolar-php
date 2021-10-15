@@ -9,25 +9,27 @@ use Slim\Routing\RouteCollectorProxy;
 
 return function (App $app) {
   $app->group('/horarios', function (RouteCollectorProxy $group) {
-    $group->get('/adicionar/{idClass}', function (ServerRequestInterface $request, ResponseInterface $response, array $args) {
-      $idClass = $args['idClass'];
-
-      $response->getBody()->write(ScheduleController::getAddSchedule($idClass));
+    $group->get('', function (ServerRequestInterface $request, ResponseInterface $response): ResponseInterface {
+      $response->getBody()->write(ScheduleController::getSchedulesFromUser());
       return $response;
     });
 
-    $group->post('/adicionar/{idClass}', function (ServerRequestInterface $request, ResponseInterface $response, array $args) {
+    $group->get('/adicionar/{idClass}', function (ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
+      return ScheduleController::getAddSchedule($request, $response, $args);
+    });
+
+    $group->post('/adicionar/{idClass}', function (ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
       $idClass = $args['idClass'];
 
       $response->getBody()->write(ScheduleController::setAddSchedule($idClass, $request->getParsedBody()));
       return $response;
     });
 
-    $group->get('/{idClass}', function (ServerRequestInterface $request, ResponseInterface $response, array $args) {
-      $idClass = $args['idClass'];
+    // $group->get('/{idClass}', function (ServerRequestInterface $request, ResponseInterface $response, array $args) : ResponseInterface{
+    //   $idClass = $args['idClass'];
 
-      $response->getBody()->write(ScheduleController::getSchedules($idClass));
-      return $response;
-    });
+    //   $response->getBody()->write(ScheduleController::getSchedules($idClass));
+    //   return $response;
+    // });
   })->add(new RequiredLoginMiddleware());
 };

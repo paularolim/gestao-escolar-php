@@ -1,0 +1,89 @@
+{% extends "/Layout/layout.html" %}{% block body %}
+<div class="w3-row w3-margin-top">
+  <div class="w3-col s3 w3-padding">
+    <div class="w3-card-4">
+      <div class="w3-container w3-center w3-blue">
+        <p>{{schoolClass['number']}}-{{schoolClass['identifier']}}</p>
+      </div>
+
+      <div class="w3-container">
+        <p>
+          Total de alunos: {{totalStudents}} / {{schoolClass['maxStudents']}}
+        </p>
+        <p>Total de matérias: {{schoolClass['totalSubjects']}}</p>
+      </div>
+
+      <div class="w3-container w3-padding">
+        <a
+          href="/turmas/{{schoolClass['id']}}"
+          class="w3-button w3-blue w3-round-xxlarge"
+          >Voltar para a turma</a
+        >
+      </div>
+    </div>
+  </div>
+
+  <div class="w3-col s9 w3-padding">
+    <div class="w3-card-4 w3-margin-bottom">
+      <div class="w3-container w3-blue">
+        <p>Horários</p>
+      </div>
+      <div class="w3-container w3-padding">
+        <form method="POST" action="/horarios/adicionar/{{id}}">
+          <div class="w3-row">
+            <div class="w3-col s2">
+              <label class="w3-text-blue">Inicio</label>
+              <input
+                class="w3-input w3-border"
+                type="text"
+                name="startTime"
+                required
+              />
+            </div>
+            <div class="w3-col s2">
+              <label class="w3-text-blue">Fim</label>
+              <input
+                class="w3-input w3-border"
+                type="text"
+                name="endTime"
+                required
+              />
+            </div>
+            <div class="w3-col s8">
+              <label class="w3-text-blue">Dia</label>
+              <select name="dayOfTheWeek" class="w3-input w3-border">
+                <option value="0">Domingo</option>
+                <option value="1">Segunda</option>
+                <option value="2">Terça</option>
+                <option value="3">Quarta</option>
+                <option value="4">Quinta</option>
+                <option value="5">Sexta</option>
+                <option value="6">Sábado</option>
+              </select>
+            </div>
+          </div>
+          <label class="w3-text-blue">Matéria</label>
+          <select name="subject" class="w3-input w3-border">
+            {% for subject in subjects %}
+            <option value="{{subject['id']}}">
+              {{subject['name']}} - {{subject['workload']}}hrs
+            </option>
+            {% endfor %}
+          </select>
+
+          <label class="w3-text-blue">Professor</label>
+          <select name="teacher" class="w3-input w3-border">
+            {% for teacher in teachers %}
+            <option value="{{teacher['id']}}">
+              {{teacher['name']}} ({{teacher['document']}}) -
+              {{teacher['formation']}}
+            </option>
+            {% endfor %}
+          </select>
+          <button class="w3-btn w3-blue w3-margin-top">Adicionar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
