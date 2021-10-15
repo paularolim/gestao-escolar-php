@@ -14,6 +14,16 @@ use Slim\Views\Twig;
 
 class EmployeeController
 {
+  private static function getUserInfo(): array
+  {
+    $id = Session::getId();
+
+    return array_merge(
+      ['type' => Session::whoIsLogged()],
+      (array)Employee::getById($id)
+    );
+  }
+
   public static function getEmployees(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
   {
     $page = $request->getQueryParams()['page'] ?? 1;
@@ -38,18 +48,22 @@ class EmployeeController
     }
   }
 
-  public static function getEmployee(string $id)
+  public static function getEmployee(ServerRequestInterface $request, ResponseInterface $response, array $params): ResponseInterface
   {
-    $employee = Employee::getById($id, ['name', 'document', 'email', 'dateOfBirth']);
+    $employeeId = $params['id'];
 
-    $content = View::render('employee/profile', [
-      'name' => $employee->name,
-      'document' => $employee->document,
-      'dateOfBirth' => $employee->dateOfBirth,
-      'email' => $employee->email
-    ]);
+    $view = Twig::fromRequest($request);
 
-    return LayoutController::getLayout('Funcionários', $content);
+    if (EmployeeSession::isLogged()) {
+      $employee = ['employee' => (array)Employee::getById($employeeId, ['name', 'document', 'email', 'dateOfBirth'])];
+
+      $args = self::getUserInfo();
+      $args = array_merge($args, $employee);
+
+      return $view->render($response, 'Employee/details.html', $args);
+    } else {
+      return $view->render($response, 'Error/not-found.html');
+    }
   }
 
   public static function getAddEmployee(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface

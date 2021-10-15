@@ -22,10 +22,7 @@ return function (App $app) {
     });
 
     $group->get('/{id}', function (ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
-      $id = $args['id'];
-
-      $response->getBody()->write(EmployeeController::getEmployee($id));
-      return $response;
+      return EmployeeController::getEmployee($request, $response, $args);
     });
   })->add(new RequiredLoginMiddleware());
 };
