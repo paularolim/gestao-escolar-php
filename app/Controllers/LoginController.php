@@ -3,8 +3,10 @@
 namespace App\Controllers;
 
 use App\Config\Session\EmployeeSession;
+use App\Config\Session\StudentSession;
 use App\Config\Session\TeacherSession;
 use App\Models\Employee;
+use App\Models\Student;
 use App\Models\Teacher;
 use Error;
 use Psr\Http\Message\ResponseInterface;
@@ -51,12 +53,20 @@ class LoginController
 
         TeacherSession::login($teacher);
       } else if ($type === 'student') {
+        $student = Student::getByDocument($document);
+        if (!$student instanceof Student) {
+          throw new Error('User does not exists');
+        }
+        if (!password_verify($password, $student->getPassword())) {
+          throw new Error('Incorrect password');
+        }
+
+        StudentSession::login($student);
       }
 
       header('Location: /dashboard');
       exit;
     } catch (Error $error) {
-      die($error);
       return $view->render($response, 'Login/index.html', ['error' => true]);
     }
   }
