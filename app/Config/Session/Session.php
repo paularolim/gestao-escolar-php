@@ -20,4 +20,13 @@ class Session
       throw new \Error('User is not logged');
     }
   }
+
+  public static function logout(): bool
+  {
+    self::init();
+
+    unset($_SESSION['user']);
+
+    return true;
+  }
 }

@@ -2,6 +2,7 @@
 
 use App\Controllers\DashboardController;
 use App\Controllers\LoginController;
+use App\Controllers\LogoutController;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\App;
@@ -17,5 +18,9 @@ return function (App $app) {
 
   $app->get('/dashboard', function (ServerRequestInterface $request, ResponseInterface $response): ResponseInterface {
     return DashboardController::getDashboardScreen($request, $response);
+  });
+
+  $app->get('/logout', function (ServerRequestInterface $request, ResponseInterface $response): void {
+    LogoutController::setLogout();
   });
 };
