@@ -1,1 +1,143 @@
-Login
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestão Escolar - Login</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="public/styles/login.css" />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-md navbar-dark background-black">
+      <div class="container-fluid mx-auto">
+        <span class="navbar-brand mb-0 h1 mx-auto text-uppercase">
+          Gestão Escolar
+        </span>
+      </div>
+    </nav>
+
+    <div class="container mx-auto mt-4" style="max-width: 50%">
+      {% if error %}
+      <div class="alert text-center background-black text-error" role="alert">
+        Usuário e/ou senha incorretos!
+      </div>
+      {% endif %}
+
+      <div class="d-flex flex-row justify-content-between">
+        <div
+          class="card d-flex align-items-center bg-y-secondary"
+          id="card-employee"
+          style="width: 12rem"
+          onclick="changeType('employee')"
+        >
+          <img
+            src="public/img/employee.png"
+            class="card-img-top icon-card mt-4"
+            alt="Icone funcionário"
+          />
+          <div class="card-body">
+            <h5 class="card-title">Funcionário</h5>
+          </div>
+        </div>
+        <div
+          class="card d-flex align-items-center bg-b-secondary"
+          id="card-teacher"
+          style="width: 12rem"
+          onclick="changeType('teacher')"
+        >
+          <img
+            src="public/img/teacher.png"
+            class="card-img-top icon-card mt-4"
+            alt="Icone professor"
+          />
+          <div class="card-body">
+            <h5 class="card-title">Professor</h5>
+          </div>
+        </div>
+        <div
+          class="card d-flex align-items-center bg-r-secondary"
+          id="card-student"
+          style="width: 12rem"
+          onclick="changeType('student')"
+        >
+          <img
+            src="public/img/student.png"
+            class="card-img-top icon-card mt-4"
+            alt="Icone aluno"
+          />
+          <div class="card-body">
+            <h5 class="card-title">Aluno</h5>
+          </div>
+        </div>
+      </div>
+      <form class="container mt-4" style="width: 80%" method="POST" action="/">
+        <input type="hidden" id="type" name="type" value="employee" />
+        <div class="row">
+          <div class="col-md-12">
+            <label for="document" class="form-label">Documento</label>
+            <input type="text" class="form-control" name="document" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <label for="password" class="form-label">Senha</label>
+            <input type="password" class="form-control" name="password" />
+          </div>
+        </div>
+        <div class="col-12 mt-2">
+          <button
+            type="submit"
+            class="btn background-black text-white"
+            style="width: 100%"
+          >
+            Login
+          </button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>
+
+<script>
+  function changeStyle() {
+    const type = document.getElementById("type").value;
+    const cardEmployee = document.getElementById("card-employee");
+    const cardTeacher = document.getElementById("card-teacher");
+    const cardStudent = document.getElementById("card-student");
+
+    // reset style
+    cardEmployee.classList.add("bg-y-secondary");
+    cardEmployee.classList.remove("bg-y-primary");
+
+    cardTeacher.classList.add("bg-b-secondary");
+    cardTeacher.classList.remove("bg-b-primary");
+
+    cardStudent.classList.add("bg-r-secondary");
+    cardStudent.classList.remove("bg-r-primary");
+
+    if (type === "employee") {
+      cardEmployee.classList.add("bg-y-primary");
+      cardEmployee.classList.remove("bg-y-secondary");
+    } else if (type === "teacher") {
+      cardTeacher.classList.add("bg-b-primary");
+      cardTeacher.classList.remove("bg-b-secondary");
+    } else if (type === "student") {
+      cardStudent.classList.add("bg-r-primary");
+      cardStudent.classList.remove("bg-r-secondary");
+    }
+  }
+  changeStyle();
+
+  function changeType(type) {
+    document.getElementById("type").value = type;
+    changeStyle();
+    console.log(document.getElementById("type").value);
+  }
+</script>
