@@ -1,0 +1,4 @@
+{% if user['type'] == 'employee' %}{% set layout = '/Layout/employee.html' %} {%
+endif %} {% if user['type'] == 'teacher' %}{% set layout =
+'/Layout/teacher.html' %} {% endif %} {% if user['type'] == 'student' %}{% set
+layout = '/Layout/student.html' %} {% endif %} {% extends(layout) %}

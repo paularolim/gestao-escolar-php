@@ -22,6 +22,10 @@ abstract class Person
   {
     return $this->id;
   }
+  public function setId(string $id): void
+  {
+    $this->id = $id;
+  }
 
   public function getName(): string
   {
@@ -29,7 +33,7 @@ abstract class Person
   }
   public function setName(string $name): void
   {
-    // TODO implement here
+    $this->name = $name;
   }
 
   public function getDocument(): string
@@ -38,7 +42,7 @@ abstract class Person
   }
   public function setDocument(string $document): void
   {
-    // TODO implement here
+    $this->document = $document;
   }
 
   public function getDateOfBirth(): string
@@ -47,7 +51,7 @@ abstract class Person
   }
   public function setDateOfBirth(string $dateOfBirth)
   {
-    // TODO implement here
+    $this->dateOfBirth = $dateOfBirth;
   }
 
   public function getPhone(): string
@@ -56,7 +60,7 @@ abstract class Person
   }
   public function setPhone(string $phone)
   {
-    // TODO implement here
+    $this->phone = $phone;
   }
 
   public function getEmail(): string
@@ -65,7 +69,7 @@ abstract class Person
   }
   public function setEmail(string $email)
   {
-    // TODO implement here
+    $this->email = $email;
   }
 
   public function getPassword(): string
@@ -74,7 +78,7 @@ abstract class Person
   }
   public function setPassword(string $password)
   {
-    // TODO implement here
+    $this->password = $password;
   }
 
   public function getActive(): bool
@@ -87,10 +91,7 @@ abstract class Person
     return $this->active;
   }
 
-  protected static abstract function login(string $email,  string $password): bool;
-  protected static abstract function logout(): bool;
-
-  protected static abstract function getAll(array $fileds = ['*'], string $where, string $order, string $limit): array;
+  protected static abstract function getAll(array $fileds = ['*'], string $where = null, string $order = null, string $limit = null): array;
   protected static abstract function getById(string $id, array $fileds = ['*']): ?Person;
   protected static abstract function getByDocument(string $document, array $fileds = ['*']): ?Person;
   protected abstract function store(): Person;

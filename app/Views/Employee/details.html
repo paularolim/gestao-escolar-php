@@ -1,0 +1,46 @@
+{% extends('/Layout/index.html') %} {% block body %}
+<div class="row">
+  <div class="col-3 pe-5">
+    <div class="card border-0" style="width: 100%">
+      <img src="/public/img/employee.png" class="card-img-top" alt="..." />
+      <div class="background-primary mt-4 text-center px-2 py-2 fs-4">
+        {{employee.getName()}}
+      </div>
+      <div class="card-body">
+        <!-- TODO: implement role -->
+        <p class="card-text">Cargo: -</p>
+        <p class="card-text">CPF: {{employee.getDocument()}}</p>
+        <p class="card-text">Nascimento: {{employee.getDateOfBirth()}}</p>
+        <p class="card-text">
+          Ativo: {%if employee.getActive() == 1 %}Sim{% endif %}{%if
+          employee.getActive() == 0 %}Não{% endif %}
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="col-9 ps-5">
+    <div class="row">
+      <div class="col-6">
+        <p class="text-muted">Funcionários &raquo; Detalhes</p>
+      </div>
+      <div class="col-6 d-flex justify-content-end">
+        <!-- TODO: implement edit and disabled -->
+        <a type="button" class="btn btn-outline-primary">Editar</a>
+        <a type="button" class="btn btn-outline-primary ms-1"
+          >{%if employee.getActive() == 1 %}Desativar{% endif %}{%if
+          employee.getActive() == 0 %}Ativar{% endif %}</a
+        >
+      </div>
+    </div>
+
+    <div class="card mt-4">
+      <div class="background-primary px-4 py-2 fs-4">Contato</div>
+      <div class="card-body">
+        <p>Email: {{employee.getEmail()}}</p>
+        <!-- TODO: implement phone -->
+        <p>Telefone: -</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

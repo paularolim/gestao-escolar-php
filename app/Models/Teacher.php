@@ -33,7 +33,7 @@ class Teacher extends Person
     return true;
   }
 
-  public static function getAll(array $fileds = ['*'], string $where, string $order, string $limit): array
+  public static function getAll(array $fileds = ['*'], string $where = null, string $order = null, string $limit = null): array
   {
     // TODO implement here
     return [];
