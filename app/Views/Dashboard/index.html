@@ -1,0 +1,4 @@
+{% if user['type'] == 'employee' %} {{include('/Dashboard/employee.html')}} {%
+endif %} {% if user['type'] == 'teacher' %}
+{{include('/Dashboard/teacher.html')}} {% endif %} {% if user['type'] ==
+'student' %} {{include('/Dashboard/student.html')}} {% endif %}
