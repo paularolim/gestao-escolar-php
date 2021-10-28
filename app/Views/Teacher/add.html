@@ -1,0 +1,55 @@
+{% extends('/Layout/index.html') %} {% block body %}
+<div class="container mt-4" style="width: 80%">
+  <h1>Adicionar professor</h1>
+
+  {% if error %}
+  <div class="alert alert-danger text-center text-error" role="alert">
+    Não foi possível adicionar!
+  </div>
+  {% endif %}
+
+  <form method="POST" action="/professores/adicionar">
+    <div class="row">
+      <div class="col-md-12">
+        <label for="name" class="form-label">Nome</label>
+        <input type="text" class="form-control" name="name" required />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <label for="formation" class="form-label">Formação</label>
+        <input type="text" class="form-control" name="formation" required />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label for="document" class="form-label">Documento</label>
+        <input type="text" class="form-control" name="document" required />
+      </div>
+      <div class="col-md-6">
+        <label for="dateOfBirth" class="form-label">Data de nascimento</label>
+        <input type="date" class="form-control" name="dateOfBirth" required />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label for="phone" class="form-label">Telefone</label>
+        <input type="string" class="form-control" name="phone" required />
+      </div>
+      <div class="col-md-6">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" name="email" required />
+      </div>
+    </div>
+    <div class="col-12 mt-2">
+      <button
+        type="submit"
+        class="btn btn-primary text-white"
+        style="width: 100%"
+      >
+        Adicionar
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}
