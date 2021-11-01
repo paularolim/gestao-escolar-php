@@ -1,0 +1,56 @@
+{% extends('/Layout/index.html') %} {% block body %}
+<div class="container mt-4" style="width: 80%">
+  <h1>Adicionar matéria</h1>
+
+  {% if error %}
+  <div class="alert alert-danger text-center text-error" role="alert">
+    Não foi possível adicionar!
+  </div>
+  {% endif %}
+
+  <form method="POST" action="/materias/adicionar">
+    <div class="row">
+      <div class="col-md-12">
+        <label for="title" class="form-label">Nome</label>
+        <input type="text" class="form-control" name="title" required />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label for="workload" class="form-label">
+          Carga horária (em horas)
+        </label>
+        <input
+          type="number"
+          class="form-control"
+          name="workload"
+          min="1"
+          required
+        />
+      </div>
+      <div class="col-md-6">
+        <label for="passingScore" class="form-label">Nota de corte</label>
+        <input
+          type="number"
+          class="form-control"
+          name="passingScore"
+          min="1"
+          max="10"
+          step="0.5"
+          required
+        />
+      </div>
+    </div>
+
+    <div class="col-12 mt-2">
+      <button
+        type="submit"
+        class="btn btn-primary text-white"
+        style="width: 100%"
+      >
+        Adicionar
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}

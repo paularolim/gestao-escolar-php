@@ -1,0 +1,42 @@
+{% extends('/Layout/index.html') %} {% block body %}
+<div class="row">
+  <div class="col-3 pe-5">
+    <div class="card" style="width: 100%">
+      <div class="background-primary text-center px-2 py-2 fs-4">
+        {{subject.getTitle()}}
+      </div>
+      <div class="card-body">
+        <p class="card-text">Carga horária: {{subject.getWorkload()}} horas</p>
+        <p class="card-text">Nota de corte: {{subject.getPassingScore()}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-9 ps-5">
+    <div class="row">
+      <div class="col-6">
+        <p class="text-muted">Matérias &raquo; Detalhes</p>
+      </div>
+      <div class="col-6 d-flex justify-content-end">
+        <!-- TODO: implement edit subject -->
+        <a type="button" class="btn btn-primary">Editar</a>
+      </div>
+    </div>
+
+    <div class="card mt-4">
+      <div class="background-primary px-4 py-2 fs-4">Professores</div>
+      <div class="card-body">
+        <!-- TODO: implement teacher who teach this subject -->
+        <p>Sem professores</p>
+      </div>
+    </div>
+
+    <div class="card mt-4">
+      <div class="background-primary px-4 py-2 fs-4">Turmas</div>
+      <div class="card-body">
+        <!-- TODO: implement school classes who learn this subject -->
+        <p>Sem turmas</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
