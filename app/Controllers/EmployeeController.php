@@ -47,7 +47,7 @@ class EmployeeController
     $user = Session::getUser();
 
     if (EmployeeSession::isLogged()) {
-      $employee = Employee::getById($employeeId, ['name', 'document', 'email', 'dateOfBirth']);
+      $employee = Employee::getById($employeeId, ['name', 'document', 'phone', 'email', 'dateOfBirth', 'active', 'role']);
 
       return $view->render($response, 'Employee/details.html', [
         'user' => $user,
