@@ -1,18 +1,29 @@
 {% extends('/Layout/index.html') %} {% block body %}
 <div class="row">
   <div class="col-3 pe-5">
-    <div class="card border-0" style="width: 100%">
-      <img src="/public/img/teacher.png" class="card-img-top" alt="..." />
+    <div class="card" style="width: 100%">
+      <img
+        src="/public/img/teacher.png"
+        class="mx-2 mt-2"
+        alt="Icone do perfil do funcionário"
+      />
       <div class="background-primary mt-4 text-center px-2 py-2 fs-4">
         {{teacher.getName()}}
       </div>
       <div class="card-body">
         <p class="card-text">Formação: {{teacher.getFormation()}}</p>
-        <p class="card-text">CPF: {{teacher.getDocument()}}</p>
-        <p class="card-text">Nascimento: {{teacher.getDateOfBirth()}}</p>
         <p class="card-text">
-          Ativo: {%if teacher.getActive() == 1 %}Sim{% endif %}{%if
-          teacher.getActive() == 0 %}Não{% endif %}
+          CPF: <span id="profileDocument">{{teacher.getDocument()}}</span>
+        </p>
+        <p class="card-text">
+          Nascimento: <span id="date">{{teacher.getDateOfBirth()}}</span>
+        </p>
+        <p class="card-text">
+          Ativo: {% if teacher.getActive() == 1 %}
+          <span class="text-success">Sim</span>
+          {% endif %}{% if teacher.getActive() == 0 %}
+          <span class="text-danger">Não</span>
+          {% endif %}
         </p>
       </div>
     </div>
@@ -20,15 +31,16 @@
   <div class="col-9 ps-5">
     <div class="row">
       <div class="col-6">
-        <p class="text-muted">Professores &raquo; Detalhes</p>
+        <p class="text-muted">Funcionários &raquo; Detalhes</p>
       </div>
       <div class="col-6 d-flex justify-content-end">
         <!-- TODO: implement edit and disabled -->
-        <a type="button" class="btn btn-outline-primary">Editar</a>
-        <a type="button" class="btn btn-outline-primary ms-1"
-          >{%if teacher.getActive() == 1 %}Desativar{% endif %}{%if
-          teacher.getActive() == 0 %}Ativar{% endif %}</a
-        >
+        <a type="button" class="btn btn-primary">Editar</a>
+        {% if teacher.getActive() == 1 %}
+        <a type="button" class="btn btn-danger ms-1">Desativar</a>
+        {% endif %} {%if teacher.getActive() == 0 %}
+        <a type="button" class="btn btn-success ms-1">Ativar</a>
+        {% endif %}
       </div>
     </div>
 
@@ -36,10 +48,20 @@
       <div class="background-primary px-4 py-2 fs-4">Contato</div>
       <div class="card-body">
         <p>Email: {{teacher.getEmail()}}</p>
-        <!-- TODO: implement phone -->
-        <p>Telefone: -</p>
+        <p>Telefone: <span id="phone">{{teacher.getPhone()}}</span></p>
       </div>
     </div>
   </div>
 </div>
+
+<script src="/public/js/format.js"></script>
+<script>
+  const phone = document.getElementById("phone");
+  const profileDocument = document.getElementById("profileDocument");
+  const date = document.getElementById("date");
+
+  phone.innerHTML = formatPhone(phone.innerHTML);
+  profileDocument.innerHTML = formatDocument(profileDocument.innerHTML);
+  date.innerHTML = formatDate(date.innerHTML);
+</script>
 {% endblock %}

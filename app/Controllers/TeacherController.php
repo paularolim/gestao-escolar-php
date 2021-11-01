@@ -23,7 +23,7 @@ class TeacherController
       $total = Teacher::getCount();
       $pagination = new Pagination($page, $size, $total);
       $pages = $pagination->getInfo();
-      $teachers = Teacher::getAll(['id', 'name', 'document', 'formation'], null, 'name ASC', $pagination->limit());
+      $teachers = Teacher::getAll(['id', 'name', 'document', 'formation', 'active'], null, 'name ASC', $pagination->limit());
 
       return $view->render($response, 'Teacher/list.html', [
         'user' => Session::getUser(),
@@ -45,7 +45,7 @@ class TeacherController
     $view = Twig::fromRequest($request);
 
     if (EmployeeSession::isLogged()) {
-      $teacher = Teacher::getById($id, ['name', 'document', 'email', 'dateOfBirth', 'formation']);
+      $teacher = Teacher::getById($id, ['name', 'document', 'email', 'phone', 'dateOfBirth', 'formation', 'active']);
 
       return $view->render($response, 'Teacher/details.html', [
         'user' => Session::getUser(),
