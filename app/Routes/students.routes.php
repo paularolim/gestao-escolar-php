@@ -24,5 +24,9 @@ return function (App $app) {
     $group->get('/{id}', function (ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
       return StudentController::getStudent($request, $response, $args);
     });
+
+    $group->post('/{id}/turmas', function (ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
+      return StudentController::setAddSchoolClass($request, $response, $args);
+    });
   })->add(new RequiredLoginMiddleware());
 };

@@ -31,7 +31,7 @@
   <div class="col-9 ps-5">
     <div class="row">
       <div class="col-6">
-        <p class="text-muted">Funcionários &raquo; Detalhes</p>
+        <p class="text-muted">Alunos &raquo; Detalhes</p>
       </div>
       <div class="col-6 d-flex justify-content-end">
         <!-- TODO: implement edit and disabled -->
@@ -45,10 +45,60 @@
     </div>
 
     <div class="card mt-4">
-      <div class="background-primary px-4 py-2 fs-4">Contato</div>
+      <div class="background-primary px-3 py-2 fs-4">Contato</div>
       <div class="card-body">
         <p>Email: {{student.getEmail()}}</p>
         <p>Telefone: <span id="phone">{{student.getPhone()}}</span></p>
+      </div>
+    </div>
+
+    <div class="card mt-4">
+      <div class="background-primary px-3 py-2 fs-4">Turmas</div>
+      <div class="card-body">
+        <form method="post" action="/alunos/{{student.getId()}}/turmas">
+          <div class="form-group row">
+            <label for="schoolClass" class="col-2 col-form-label">Turma:</label>
+            <div class="col-8">
+              <select name="schoolClass" class="form-control">
+                <option selected>Escolha...</option>
+                {% for schoolClass in schoolClassesAvailable %}
+                <option value="{{schoolClass.id}}">
+                  {{schoolClass.identifier}}_{{schoolClass.year}}
+                </option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-2">
+              <input type="submit" class="btn btn-primary" value="Adicionar" />
+            </div>
+          </div>
+        </form>
+
+        <div class="mt-4">
+          {% if not schoolClasses %}
+          <p>Não está matriculado em nenhuma turma.</p>
+          {% else %}
+          <ul class="list-group">
+            {% for schoolClass in schoolClasses %}
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col-6">
+                  <span>
+                    {{schoolClass.identifier}}_{{schoolClass.year}} |
+                    {{schoolClass.status}}
+                  </span>
+                </div>
+                <div class="col-6 d-flex justify-content-end">
+                  <!-- TODO: implement change status -->
+                  <a href="#" class="btn btn-outline-primary ms-2">Editar</a>
+                  <a href="#" class="btn btn-outline-danger ms-2">Excluir</a>
+                </div>
+              </div>
+            </li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
       </div>
     </div>
   </div>

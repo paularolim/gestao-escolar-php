@@ -53,4 +53,16 @@ class Student extends Person
     // TODO implement here
     return $this;
   }
+
+  public static function getSchoolClasses(string $id): array
+  {
+    $result = (new Database('matriculations'))->custom(
+      'SELECT sc.id, sc.identifier, sc.year, m.status
+      from schoolClasses sc
+      inner join matriculations m
+      where sc.id = m.idSchoolClass and m.idStudent = "' . $id . '";'
+    )->fetchAll(PDO::FETCH_ASSOC);
+
+    return $result ? $result : [];
+  }
 }

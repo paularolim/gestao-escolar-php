@@ -19,7 +19,7 @@ class SchoolClass
 
   public function getId(): string
   {
-    return $this->identifier;
+    return $this->id;
   }
 
   public function getIdentifier(): string

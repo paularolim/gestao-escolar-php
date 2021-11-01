@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use App\Config\Session\EmployeeSession;
 use App\Config\Session\Session;
+use App\Models\Matriculation;
+use App\Models\SchoolClass;
 use App\Models\Student;
 use App\Utils\Pagination;
 use Error;
@@ -41,17 +43,19 @@ class StudentController
   public static function getStudent(ServerRequestInterface $request, ResponseInterface $response, array $params): ResponseInterface
   {
     $id = $params['id'];
-
     $view = Twig::fromRequest($request);
-
     $user = Session::getUser();
 
-    if (EmployeeSession::isLogged()) {
-      $student = Student::getById($id, ['name', 'document', 'phone', 'email', 'dateOfBirth', 'active', 'matriculation']);
+    $student = Student::getById($id, ['id', 'name', 'document', 'phone', 'email', 'dateOfBirth', 'active', 'matriculation']);
+    if (EmployeeSession::isLogged() && !!$student) {
+      $schoolClassesAvailable = SchoolClass::getAll(['*']);
+      $schoolClasses = Student::getSchoolClasses($id);
 
       return $view->render($response, 'Student/details.html', [
         'user' => $user,
-        'student' => $student
+        'student' => $student,
+        'schoolClassesAvailable' => $schoolClassesAvailable,
+        'schoolClasses' => $schoolClasses
       ]);
     }
 
@@ -94,6 +98,30 @@ class StudentController
     try {
       $student->store();
       header('Location: /alunos');
+      exit;
+    } catch (Error $e) {
+      die($e);
+      return $view->render($response, 'Student/add.html', [
+        'user' => $user,
+        'error' => true
+      ]);
+    }
+  }
+
+  public static function setAddSchoolClass(ServerRequestInterface $request, ResponseInterface $response, array $params): ResponseInterface
+  {
+    $id = $params['id'];
+    $body = $request->getParsedBody();
+    $view = Twig::fromRequest($request);
+    $user = Session::getUser();
+
+    $matriculation = new Matriculation();
+    $matriculation->setStudent(Student::getById($id));
+    $matriculation->setSchoolClass(SchoolClass::getById($body['schoolClass']));
+
+    try {
+      $matriculation->store();
+      header('Location: /alunos/' . $id);
       exit;
     } catch (Error $e) {
       die($e);
