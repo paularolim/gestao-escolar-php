@@ -85,10 +85,13 @@
             <li class="list-group-item">
               <div class="row">
                 <div class="col-6">
-                  <span>
+                  <a
+                    href="/turmas/{{schoolClass.id}}"
+                    class="text-decoration-none text-body"
+                  >
                     {{schoolClass.identifier}}_{{schoolClass.year}} |
                     {{schoolClass.status}}
-                  </span>
+                  </a>
                 </div>
                 <div class="col-6 d-flex justify-content-end">
                   <!-- TODO: implement change status -->
