@@ -2,6 +2,7 @@
 
 namespace App\Database;
 
+use mysqli;
 use PDO;
 use PDOException;
 use PDOStatement;
@@ -25,7 +26,7 @@ class Database
   private function setConnection()
   {
     try {
-      $driver = 'mysql:host=' . self::HOST . ';dbname=' . self::DATABASE . ';';
+      $driver = 'mysql:host=' . self::HOST . ';dbname=' . self::DATABASE . ';charset=utf8;';
       $this->connection = new PDO($driver, self::USER, self::PASS);
       $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (PDOException $e) {
