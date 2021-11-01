@@ -23,7 +23,7 @@ class EmployeeController
       $total = Employee::getCount();
       $pagination = new Pagination($page, $size, $total);
       $pages = $pagination->getInfo();
-      $employees = Employee::getAll(['id', 'name', 'document'], null, 'name ASC', $pagination->limit());
+      $employees = Employee::getAll(['id', 'name', 'document', 'role', 'active'], null, 'name ASC', $pagination->limit());
 
       return $view->render($response, 'Employee/list.html', [
         'user' => Session::getUser(),
