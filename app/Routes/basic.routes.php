@@ -4,6 +4,7 @@ use App\Middlewares\RequiredLoginMiddleware;
 use App\Controllers\DashboardController;
 use App\Controllers\LoginController;
 use App\Controllers\LogoutController;
+use App\Controllers\ProfileController;
 use App\Middlewares\RequiredLogoutMiddleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -20,6 +21,10 @@ return function (App $app) {
 
   $app->get('/dashboard', function (ServerRequestInterface $request, ResponseInterface $response): ResponseInterface {
     return DashboardController::getDashboardScreen($request, $response);
+  })->add(new RequiredLoginMiddleware());
+
+  $app->get('/perfil', function (ServerRequestInterface $request, ResponseInterface $response): ResponseInterface {
+    return ProfileController::getProfileScreen($request, $response);
   })->add(new RequiredLoginMiddleware());
 
   $app->get('/logout', function (): void {

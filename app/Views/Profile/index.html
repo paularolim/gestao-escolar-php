@@ -1,0 +1,81 @@
+{% extends('/Layout/index.html') %} {% block body %}
+<div class="row">
+  <div class="col-3 pe-5">
+    <div class="card" style="width: 100%">
+      {% if user.type == 'employee' %}
+      <img
+        src="/public/img/employee.png"
+        class="mx-2 mt-2"
+        alt="Icone do perfil do funcionário"
+      />
+      {% endif %} {% if user.type == 'teacher' %}
+      <img
+        src="/public/img/teacher.png"
+        class="mx-2 mt-2"
+        alt="Icone do perfil do professor"
+      />
+      {% endif %} {% if user.type == 'student' %}
+      <img
+        src="/public/img/student.png"
+        class="mx-2 mt-2"
+        alt="Icone do perfil do aluno"
+      />
+      {% endif %}
+
+      <div class="background-primary mt-4 text-center px-2 py-2 fs-4">
+        {{user.name}}
+      </div>
+      <div class="card-body">
+        {% if user.type == 'employee' %}
+        <p class="card-text">Cargo: {{user.role}}</p>
+        {% endif %} {% if user.type == 'teacher' %}
+        <p class="card-text">Formação: {{user.formation}}</p>
+        {% endif %}
+
+        <p class="card-text">
+          CPF: <span id="profileDocument">{{user.document}}</span>
+        </p>
+        <p class="card-text">
+          Nascimento: <span id="date">{{user.dateOfBirth}}</span>
+        </p>
+        <p class="card-text">
+          Ativo: {% if user.active == 1 %}
+          <span class="text-success">Sim</span>
+          {% endif %}{% if user.active == 0 %}
+          <span class="text-danger">Não</span>
+          {% endif %}
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="col-9 ps-5">
+    <div class="row">
+      <div class="col-6">
+        <p class="text-muted">Perfil</p>
+      </div>
+      <div class="col-6 d-flex justify-content-end">
+        <a type="button" class="btn btn-primary">Editar</a>
+      </div>
+    </div>
+
+    <div class="card mt-4">
+      <div class="background-primary px-4 py-2 fs-4">Contato</div>
+      <div class="card-body">
+        <p>Email: {{user.email}}</p>
+        <p>Telefone: <span id="phone">{{user.phone}}</span></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/public/js/format.js"></script>
+<script>
+  const phone = document.getElementById("phone");
+  const profileDocument = document.getElementById("profileDocument");
+  const date = document.getElementById("date");
+
+  phone.innerHTML = formatPhone(phone.innerHTML);
+  profileDocument.innerHTML = formatDocument(profileDocument.innerHTML);
+  date.innerHTML = formatDate(date.innerHTML);
+</script>
+{% endblock %}
