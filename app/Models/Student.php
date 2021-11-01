@@ -32,15 +32,15 @@ class Student extends Person
     return true;
   }
 
-  public static function getAll(array $fileds = ['*'], string $where, string $order, string $limit): array
+  public static function getAll(array $fileds = ['*'], string $where = null, string $order = null, string $limit = null): array
   {
     // TODO implement here
     return [];
   }
   public static function getById(string $id, array $fileds = ['*']): ?Student
   {
-    // TODO implement here
-    return new Student();
+    $result = (new Database('students'))->select($fileds, 'id = "' . $id . '"')->fetchObject(self::class);
+    return $result ? $result : null;
   }
   public static function getByDocument(string $document, array $fileds = ['*']): ?Student
   {
