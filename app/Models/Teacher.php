@@ -71,4 +71,35 @@ class Teacher extends Person
     // TODO implement here
     return $this;
   }
+
+  public static function addSubject(string $id, string $idSubject): array
+  {
+    $idSubjectTeacher = Uuid::uuid4();
+
+    try {
+      (new Database('subjects_teachers'))->insert([
+        'id' => $idSubjectTeacher,
+        'idTeacher' => $id,
+        'idSubject' => $idSubject,
+        'date' => date('Y-m-d')
+      ]);
+    } catch (PDOException $e) {
+      die($e);
+      throw new Error('Não foi possível adicionar a matéria');
+    }
+
+    return self::getSubjects($id);
+  }
+
+  public static function getSubjects(string $id): array
+  {
+    $result = (new Database('teachers'))->custom(
+      'select st.id, s.title, s.workload, st.date, st.active
+      from subjects_teachers st
+      inner join subjects s
+      where st.idTeacher = "' . $id . '" and st.idSubject = s.id;'
+    )->fetchAll(PDO::FETCH_ASSOC);
+
+    return $result ? $result : [];
+  }
 }

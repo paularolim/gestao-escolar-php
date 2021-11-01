@@ -31,7 +31,7 @@
   <div class="col-9 ps-5">
     <div class="row">
       <div class="col-6">
-        <p class="text-muted">Funcionários &raquo; Detalhes</p>
+        <p class="text-muted">Professores &raquo; Detalhes</p>
       </div>
       <div class="col-6 d-flex justify-content-end">
         <!-- TODO: implement edit and disabled -->
@@ -49,6 +49,68 @@
       <div class="card-body">
         <p>Email: {{teacher.getEmail()}}</p>
         <p>Telefone: <span id="phone">{{teacher.getPhone()}}</span></p>
+      </div>
+    </div>
+
+    <div class="card mt-4">
+      <div class="background-primary px-4 py-2 fs-4">Matérias</div>
+      <div class="card-body">
+        <form
+          method="post"
+          action="/professores/{{teacher.getId()}}/materias/adicionar"
+        >
+          <div class="form-group row">
+            <label for="subject" class="col-2 col-form-label">Matéria:</label>
+            <div class="col-8">
+              <select name="subject" class="form-control">
+                <option selected>Escolha...</option>
+                {% for subject in subjectsAvailable %}
+                <option value="{{subject.id}}">
+                  {{subject.title}} - {{subject.workload}} horas
+                </option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-2">
+              <input type="submit" class="btn btn-primary" value="Adicionar" />
+            </div>
+          </div>
+        </form>
+
+        <div class="mt-4">
+          {% if subjects %}
+          <ul class="list-group">
+            {% for subject in subjects %}
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col-6">
+                  <span>{{subject.title}} - {{subject.workload}} horas</span>
+                </div>
+                <div class="col-6 d-flex justify-content-end">
+                  <!-- TODO: implement able, disable and delete subjects from teacher -->
+                  {% if subject.active == 1 %}
+                  <a href="#" class="btn btn-outline-warning">Desativar</a>
+                  {% else %}
+                  <a href="#" class="btn btn-outline-success">Ativar</a>
+                  {% endif %}
+                  <a href="#" class="btn btn-outline-danger ms-2">Excluir</a>
+                </div>
+              </div>
+            </li>
+            {% endfor %}
+          </ul>
+          {% else %}
+          <p>Sem matérias cadastradas.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="card mt-4">
+      <!-- TODO: implement show school classes from teacher -->
+      <div class="background-primary px-4 py-2 fs-4">Turmas</div>
+      <div class="card-body">
+        <p>Sem turmas cadastradas</p>
       </div>
     </div>
   </div>

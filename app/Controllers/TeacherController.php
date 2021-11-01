@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Config\Session\EmployeeSession;
 use App\Config\Session\Session;
+use App\Models\Subject;
 use App\Models\Teacher;
 use App\Utils\Pagination;
 use Error;
@@ -44,12 +45,16 @@ class TeacherController
 
     $view = Twig::fromRequest($request);
 
-    if (EmployeeSession::isLogged()) {
-      $teacher = Teacher::getById($id, ['name', 'document', 'email', 'phone', 'dateOfBirth', 'formation', 'active']);
+    $teacher = Teacher::getById($id, ['id', 'name', 'document', 'email', 'phone', 'dateOfBirth', 'formation', 'active']);
+    if (EmployeeSession::isLogged() && !!$teacher) {
+      $subjectsAvailable = Subject::getAll();
+      $subjects = Teacher::getSubjects($id);
 
       return $view->render($response, 'Teacher/details.html', [
         'user' => Session::getUser(),
-        'teacher' => $teacher
+        'teacher' => $teacher,
+        'subjectsAvailable' => $subjectsAvailable,
+        'subjects' => $subjects
       ]);
     }
 
@@ -100,5 +105,17 @@ class TeacherController
         'error' => true
       ]);
     }
+  }
+
+  public static function setAddSubject(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
+  {
+    $id = $args['id'];
+    $body = $request->getParsedBody();
+    $view = Twig::fromRequest($request);
+    $user = Session::getUser();
+
+    Teacher::addSubject($id, $body['subject']);
+    header('Location: /professores/' . $id);
+    exit;
   }
 }

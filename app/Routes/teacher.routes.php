@@ -21,6 +21,10 @@ return function (App $app) {
       return TeacherController::setAddTeacher($request, $response);
     });
 
+    $group->post('/{id}/materias/adicionar', function (ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
+      return TeacherController::setAddSubject($request, $response, $args);
+    });
+
     $group->get('/{id}', function (ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
       return TeacherController::getTeacher($request, $response, $args);
     });
