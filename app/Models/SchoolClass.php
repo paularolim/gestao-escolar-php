@@ -77,4 +77,16 @@ class SchoolClass
     }
     return $this;
   }
+
+  public static function getStudents(string $id): array
+  {
+    $result = (new Database(''))->custom(
+      'select s.id, s.name, s.document
+      from matriculations m
+      inner join students s
+      where m.idStudent = s.id and m.idSchoolClass = "' . $id . '";'
+    )->fetchAll(PDO::FETCH_ASSOC);
+
+    return $result ? $result : [];
+  }
 }

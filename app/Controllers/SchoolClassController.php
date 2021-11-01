@@ -47,10 +47,14 @@ class SchoolClassController
 
     $schoolClass = SchoolClass::getById($id, ['*']);
     if (EmployeeSession::isLogged() && !!$schoolClass) {
+      $students = SchoolClass::getStudents($id);
+      $total = count($students);
 
       return $view->render($response, 'SchoolClass/details.html', [
         'user' => $user,
-        'schoolClass' => $schoolClass
+        'schoolClass' => $schoolClass,
+        'total' => $total,
+        'students' => $students
       ]);
     }
 

@@ -55,6 +55,7 @@
     <div class="card mt-4">
       <div class="background-primary px-3 py-2 fs-4">Turmas</div>
       <div class="card-body">
+        {% if student.getActive() == 1 %}
         <form method="post" action="/alunos/{{student.getId()}}/turmas">
           <div class="form-group row">
             <label for="schoolClass" class="col-2 col-form-label">Turma:</label>
@@ -73,6 +74,7 @@
             </div>
           </div>
         </form>
+        {% endif %}
 
         <div class="mt-4">
           {% if not schoolClasses %}

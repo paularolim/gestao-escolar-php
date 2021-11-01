@@ -6,7 +6,9 @@
         {{schoolClass.getIdentifier}}_{{schoolClass.year}}
       </div>
       <div class="card-body">
-        <p class="card-text">Alunos: 0/{{schoolClass.getMaxStudents()}}</p>
+        <p class="card-text">
+          Alunos: {{total}}/{{schoolClass.getMaxStudents()}}
+        </p>
       </div>
     </div>
   </div>
@@ -39,8 +41,31 @@
     <div class="card mt-4">
       <div class="background-primary px-4 py-2 fs-4">Alunos</div>
       <div class="card-body">
-        <!-- TODO: implement list students -->
+        {% if students %}
+        <ul class="list-group">
+          {% for student in students %}
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-6">
+                <a
+                  href="/alunos/{{student.id}}"
+                  class="text-decoration-none text-body"
+                >
+                  {{student.name}} | {{student.document}}
+                </a>
+              </div>
+              <div class="col-6 d-flex justify-content-end">
+                <!-- TODO: implement change status -->
+                <a href="#" class="btn btn-outline-warning ms-2">Editar</a>
+                <a href="#" class="btn btn-outline-danger ms-2">Excluir</a>
+              </div>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+        {% else %}
         <p>Não há alunos na turma.</p>
+        {% endif %}
       </div>
     </div>
   </div>
