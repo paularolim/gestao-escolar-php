@@ -8,4 +8,5 @@ return function (App $app) {
   (require_once('teacher.routes.php'))($app);
   (require_once('students.routes.php'))($app);
   (require_once('subject.routes.php'))($app);
+  (require_once('schoolClasses.routes.php'))($app);
 };

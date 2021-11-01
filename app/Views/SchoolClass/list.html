@@ -1,0 +1,80 @@
+{% extends "/Layout/index.html" %} {% block body %}
+<div class="row">
+  <div class="col-4">
+    <h1>Turmas</h1>
+    <p class="text-muted">Total: {{total}}</p>
+  </div>
+
+  <div class="col-4">
+    <form action="">
+      <div class="input-group">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Identificador"
+          aria-label="Identificador"
+        />
+        <button class="btn btn-outline-primary" type="button">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div class="col-4 d-flex justify-content-end align-items-start">
+    <a class="btn btn-outline-primary" href="/turmas/adicionar" role="button">
+      Novo
+    </a>
+  </div>
+</div>
+
+{% if total == 0 %}
+<p>Sem matérias cadastradas</p>
+{% else %}
+<table class="table">
+  <thead class="background-primary">
+    <tr>
+      <th>Turma</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for schoolClass in schoolClasses %}
+    <tr>
+      <td>{{schoolClass['identifier']}}_{{schoolClass['year']}}</td>
+      <td>
+        <a
+          class="btn btn-outline-primary btn-sm"
+          href="/turmas/{{schoolClass['id']}}"
+          role="button"
+          >Ver</a
+        >
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    {% if pages['current'] != 1 %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{pages['prev']}}&size={{pages['size']}}"
+        >&laquo;</a
+      >
+    </li>
+    {% endif %} {% if pages['total'] != 1 %} {% for i in range(1,
+    pages['total']) %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{i}}&size={{pages['size']}}">{{i}}</a>
+    </li>
+    {% endfor %} {% endif %} {% if pages['current'] != pages['total'] %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{pages['next']}}&size={{pages['size']}}"
+        >&raquo;</a
+      >
+    </li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %} {% endblock %}

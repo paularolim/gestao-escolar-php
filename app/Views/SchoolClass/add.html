@@ -1,0 +1,53 @@
+{% extends('/Layout/index.html') %} {% block body %}
+<div class="container mt-4" style="width: 80%">
+  <h1>Adicionar turma</h1>
+
+  {% if error %}
+  <div class="alert alert-danger text-center text-error" role="alert">
+    Não foi possível adicionar!
+  </div>
+  {% endif %}
+
+  <form method="POST" action="/turmas/adicionar">
+    <div class="row">
+      <div class="col-md-12">
+        <label for="identifier" class="form-label">Identificador</label>
+        <input type="text" class="form-control" name="identifier" required />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label for="year" class="form-label">Ano</label>
+        <input
+          type="number"
+          class="form-control"
+          name="year"
+          min="1990"
+          max="2022"
+          required
+        />
+      </div>
+      <div class="col-md-6">
+        <label for="maxStudents" class="form-label">Máximo de alunos</label>
+        <input
+          type="number"
+          class="form-control"
+          name="maxStudents"
+          min="1"
+          required
+        />
+      </div>
+    </div>
+
+    <div class="col-12 mt-2">
+      <button
+        type="submit"
+        class="btn btn-primary text-white"
+        style="width: 100%"
+      >
+        Adicionar
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}
