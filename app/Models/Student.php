@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Database\Database;
+use PDO;
 
 class Student extends Person
 {
@@ -34,8 +35,8 @@ class Student extends Person
 
   public static function getAll(array $fileds = ['*'], string $where = null, string $order = null, string $limit = null): array
   {
-    // TODO implement here
-    return [];
+    $result = (new Database('students'))->select($fileds, $where, $order, $limit)->fetchAll(PDO::FETCH_ASSOC);
+    return $result ? $result : [];
   }
   public static function getById(string $id, array $fileds = ['*']): ?Student
   {
@@ -46,6 +47,10 @@ class Student extends Person
   {
     $result = (new Database('students'))->select($fileds, 'document = "' . $document . '"')->fetchObject(self::class);
     return $result ? $result : null;
+  }
+  public static function getCount(): int
+  {
+    return (int)(new Database('students'))->select(['count(id) as total'])->fetchColumn(0);
   }
   public function store(): Student
   {
