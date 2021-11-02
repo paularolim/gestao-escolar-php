@@ -24,5 +24,13 @@ return function (App $app) {
     $group->get('/{id}', function (ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
       return SchoolClassController::getOne($request, $response, $args);
     });
+
+    $group->get('/{id}/horarios/adicionar', function (ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
+      return SchoolClassController::getAddSchedule($request, $response, $args);
+    });
+
+    $group->post('/{id}/horarios/adicionar', function (ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
+      return SchoolClassController::setAddSchedule($request, $response, $args);
+    });
   })->add(new RequiredLoginMiddleware());
 };

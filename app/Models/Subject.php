@@ -16,16 +16,6 @@ class Subject
   private String $title;
   private int $workload;
   private float $passingScore;
-  public array $schoolClasses;
-  public array $subjects;
-  public array $Evaluations;
-  public array $Teacher;
-  public array $Subject;
-
-  public function __construct()
-  {
-    $this->id = Uuid::uuid4();
-  }
 
   public function getId(): String
   {
@@ -61,6 +51,8 @@ class Subject
 
   public function store(): Subject
   {
+    $this->id = Uuid::uuid4();
+
     try {
       (new Database(self::TABLE))->insert([
         'id' => $this->getId(),

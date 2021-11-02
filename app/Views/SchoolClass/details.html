@@ -1,6 +1,16 @@
 {% extends('/Layout/index.html') %} {% block body %}
 <div class="row">
-  <div class="col-3 pe-5">
+  <div class="col-6">
+    <p class="text-muted">Turmas &raquo; Detalhes</p>
+  </div>
+  <div class="col-6 d-flex justify-content-end">
+    <!-- TODO: implement edit -->
+    <a type="button" class="btn btn-primary">Editar</a>
+  </div>
+</div>
+
+<div class="row mt-3">
+  <div class="col-3 pe-3">
     <div class="card" style="width: 100%">
       <div class="background-primary text-center px-2 py-2 fs-4">
         {{schoolClass.getIdentifier}}_{{schoolClass.year}}
@@ -12,29 +22,91 @@
       </div>
     </div>
   </div>
-  <div class="col-9 ps-5">
-    <div class="row">
-      <div class="col-6">
-        <p class="text-muted">Turmas &raquo; Detalhes</p>
-      </div>
-      <div class="col-6 d-flex justify-content-end">
-        <!-- TODO: implement edit -->
-        <a type="button" class="btn btn-primary">Editar</a>
-      </div>
-    </div>
 
-    <div class="card mt-4">
+  <div class="col-9 ps-5">
+    <div class="card">
       <div class="background-primary px-3 py-2 fs-4">
         <div class="row">
           <div class="col-6">Horários</div>
           <div class="col-6 d-flex justify-content-end">
-            <a href="#" class="btn btn-primary">Adicionar</a>
+            <a
+              href="/turmas/{{schoolClass.id}}/horarios/adicionar"
+              class="btn btn-primary"
+              >Adicionar</a
+            >
           </div>
         </div>
       </div>
       <div class="card-body">
-        <!-- TODO: implement schedules -->
+        {% if schedules %}
+        <table class="table">
+          <thead>
+            <tr>
+              <th class="text-center">Horário</th>
+              <th class="text-center">Domingo</th>
+              <th class="text-center">Segunda</th>
+              <th class="text-center">Terça</th>
+              <th class="text-center">Quarta</th>
+              <th class="text-center">Quinta</th>
+              <th class="text-center">Sexta</th>
+              <th class="text-center">Sábado</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for schedule in schedules %}
+            <tr>
+              <th class="text-center" scope="row">
+                {{schedule.startTime}} - {{schedule.endTime}}
+              </th>
+              {% for i in 0..6 %}
+              <td class="text-center">
+                {% if schedule[i] == '-' %}
+                <span>{{schedule[i]}}</span>
+                {% else %}
+                <div class="data">
+                  <p class="d-none" id="idData">{{schedule[i].id}}</p>
+                  <p class="d-none" id="idSchoolClassData">
+                    {{schedule[i].idSchoolClass}}
+                  </p>
+                  <p class="d-none" id="idSubjectData">
+                    {{schedule[i].idSubject}}
+                  </p>
+                  <p id="subjectData">{{schedule[i].subject}}</p>
+                  <p class="d-none" id="idTeacherData">
+                    {{schedule[i].idTeacher}}
+                  </p>
+                  <p class="d-none" id="teacherData">{{schedule[i].teacher}}</p>
+                </div>
+                {% endif %}
+              </td>
+              {% endfor %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
         <p>Não há horários na turma.</p>
+        {% endif %}
+
+        <div class="card d-none" id="scheduleDetails">
+          <div class="card-body">
+            <p>
+              <span class="fw-bold">Matéria:</span>
+              <span id="subjectDetails">Arte</span>
+            </p>
+            <p>
+              <span class="fw-bold">Professor:</span>
+              <span id="teacherDetails">Astolfo</span>
+            </p>
+            <!-- TODO: implement edit schedule -->
+            <a href="" class="btn btn-outline-primary" id="btnEditSchedule">
+              Editar
+            </a>
+            <a href="" class="btn btn-outline-primary" onclick="closePopup()">
+              Fechar
+            </a>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -45,24 +117,19 @@
         <ul class="list-group">
           {% for student in students %}
           <li class="list-group-item">
-            <div class="row">
-              <div class="col-6">
-                <a
-                  href="/alunos/{{student.id}}"
-                  class="text-decoration-none text-body"
-                >
-                  {{student.name}} | {{student.document}}
-                </a>
-              </div>
-              <div class="col-6 d-flex justify-content-end">
-                <!-- TODO: implement change status -->
-                <a href="#" class="btn btn-outline-warning ms-2">Editar</a>
-                <a href="#" class="btn btn-outline-danger ms-2">Excluir</a>
-              </div>
-            </div>
+            <!-- TODO: show matriculation status, attendants and scores (change ul to table) -->
+            <a
+              href="/alunos/{{student.id}}"
+              class="text-decoration-none text-body"
+            >
+              {{student.name}} - {{student.document}}
+            </a>
           </li>
           {% endfor %}
         </ul>
+        <p class="mt-4">
+          Obs: A edição das matrículas devem ser feitas no perfil do aluno.
+        </p>
         {% else %}
         <p>Não há alunos na turma.</p>
         {% endif %}
@@ -70,4 +137,36 @@
     </div>
   </div>
 </div>
+
+<script>
+  let tds = document.querySelectorAll(".data");
+  let panel = document.querySelector("#scheduleDetails");
+
+  tds.forEach((item) => {
+    if (item.innerText !== "-") {
+      item.style.cursor = "pointer";
+      item.addEventListener("click", (event) => {
+        const id = item.querySelector("#idData").innerHTML;
+        const idSchoolClass =
+          item.querySelector("#idSchoolClassData").innerHTML;
+        const idSubject = item.querySelector("#idSubjectData").innerHTML;
+        const subject = item.querySelector("#subjectData").innerHTML;
+        const teacher = item.querySelector("#teacherData").innerHTML;
+
+        console.log(idSchoolClass.trim());
+
+        document.getElementById("subjectDetails").innerHTML = subject;
+        document.getElementById("teacherDetails").innerHTML = teacher;
+        document.getElementById(
+          "btnEditSchedule"
+        ).href = `/turmas/${idSchoolClass.trim()}/horarios/${id.trim()}/editar`;
+        panel.classList.remove("d-none");
+      });
+    }
+  });
+
+  function closePopup() {
+    panel.classList.add("d-none");
+  }
+</script>
 {% endblock %}

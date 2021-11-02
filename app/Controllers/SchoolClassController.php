@@ -5,7 +5,10 @@ namespace App\Controllers;
 use App\Config\Session\EmployeeSession;
 use App\Config\Session\Session;
 use App\Models\Employee;
+use App\Models\Schedule;
 use App\Models\SchoolClass;
+use App\Models\Subject;
+use App\Models\Teacher;
 use App\Utils\Pagination;
 use Error;
 use Psr\Http\Message\ResponseInterface;
@@ -49,12 +52,15 @@ class SchoolClassController
     if (EmployeeSession::isLogged() && !!$schoolClass) {
       $students = SchoolClass::getStudents($id);
       $total = count($students);
+      $schedules = SchoolClass::getSchedules($id);
+      $schedulesRows = self::generateRow($schedules);
 
       return $view->render($response, 'SchoolClass/details.html', [
         'user' => $user,
         'schoolClass' => $schoolClass,
         'total' => $total,
-        'students' => $students
+        'students' => $students,
+        'schedules' => $schedulesRows
       ]);
     }
 
@@ -103,5 +109,93 @@ class SchoolClassController
         'error' => true
       ]);
     }
+  }
+
+  public static function getAddSchedule(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
+  {
+    $id = $args['id'];
+    $view = Twig::fromRequest($request);
+    $user = Session::getUser();
+
+    if (EmployeeSession::isLogged()) {
+      $subjects = Subject::getAll();
+      $teachers = Teacher::getAll();
+      $schoolClass = SchoolClass::getById($id);
+
+      return $view->render($response, 'SchoolClass/add-schedule.html', [
+        'user' => $user,
+        'schoolClass' => $schoolClass,
+        'subjects' => $subjects,
+        'teachers' => $teachers
+      ]);
+    }
+
+    return $view->render($response, 'Error/not-found.html', [
+      'user' => $user
+    ]);
+  }
+
+  public static function setAddSchedule(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
+  {
+    $id = $args['id'];
+    $body = $request->getParsedBody();
+    $view = Twig::fromRequest($request);
+    $user = Session::getUser();
+
+    $schedule = new Schedule();
+    $schedule->setTeacher(Teacher::getById($body['teacher']));
+    $schedule->setSchoolClass(SchoolClass::getById($id));
+    $schedule->setSubject(Subject::getById($body['subject']));
+    $schedule->setStartTime($body['startTime']);
+    $schedule->setEndTime($body['endTime']);
+    $schedule->setDayOfTheWeek($body['dayOfTheWeek']);
+
+    try {
+      $schedule->store();
+      header('Location: /turmas/' . $id);
+      exit;
+    } catch (Error $e) {
+      die($e);
+      return $view->render($response, 'SchoolClass/add-schedule.html', [
+        'user' => $user,
+        'error' => true
+      ]);
+    }
+  }
+
+  private static function rowStructure($startTime, $endTime)
+  {
+    return [
+      'startTime' => $startTime,
+      'endTime' => $endTime,
+      '0' => '-',
+      '1' => '-',
+      '2' => '-',
+      '3' => '-',
+      '4' => '-',
+      '5' => '-',
+      '6' => '-',
+    ];
+  }
+
+  private static function generateRow(array $schedules): array
+  {
+    $row = [];
+
+    foreach ($schedules as $schedule) {
+      $row[$schedule['startTime']] = self::rowStructure($schedule['startTime'], $schedule['endTime']);
+    }
+    foreach ($schedules as $schedule) {
+      $row[$schedule['startTime']][($schedule['dayOfTheWeek'])] = [
+        'id' => $schedule['id'],
+        'idSchoolClass' => $schedule['idSchoolClass'],
+        'idSubject' => $schedule['idSubject'],
+        'subject' => $schedule['title'],
+        'idTeacher' => $schedule['idTeacher'],
+        'teacher' => $schedule['name']
+      ];
+    }
+
+    return array_values($row);
   }
 }

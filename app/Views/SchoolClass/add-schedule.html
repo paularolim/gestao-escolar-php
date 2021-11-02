@@ -1,0 +1,72 @@
+{% extends('/Layout/index.html') %} {% block body %}
+<div class="container mt-4" style="width: 80%">
+  <h1>Adicionar horário</h1>
+
+  {% if error %}
+  <div class="alert alert-danger text-center text-error" role="alert">
+    Não foi possível adicionar!
+  </div>
+  {% endif %}
+
+  <form method="POST" action="/turmas/{{schoolClass.id}}/horarios/adicionar">
+    <div class="row">
+      <div class="col-4">
+        <label for="startTime" class="form-label">Ínicio</label>
+        <input type="text" class="form-control" name="startTime" required />
+      </div>
+
+      <div class="col-4">
+        <label for="endTime" class="form-label">Fim</label>
+        <input type="text" class="form-control" name="endTime" required />
+      </div>
+
+      <div class="col-4">
+        <label class="form-label">Dia</label>
+        <select name="dayOfTheWeek" class="form-control">
+          <option value="0">Domingo</option>
+          <option value="1">Segunda</option>
+          <option value="2">Terça</option>
+          <option value="3">Quarta</option>
+          <option value="4">Quinta</option>
+          <option value="5">Sexta</option>
+          <option value="6">Sábado</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <label for="subject" class="form-label">Matéria</label>
+        <select name="subject" class="form-control">
+          {% for subject in subjects %}
+          <option value="{{subject.id}}">{{subject.title}}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <label for="teacher" class="form-label">Professor</label>
+        <select name="teacher" class="form-control">
+          {% for teacher in teachers %}
+          <option value="{{teacher.id}}">
+            {{teacher.name}} - {{teacher.document}} | {{teacher.formation}}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <div class="col-12 mt-2">
+      <button
+        type="submit"
+        class="btn btn-primary text-white"
+        style="width: 100%"
+      >
+        Adicionar
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}
