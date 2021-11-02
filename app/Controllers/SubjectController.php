@@ -4,7 +4,9 @@ namespace App\Controllers;
 
 use App\Config\Session\EmployeeSession;
 use App\Config\Session\Session;
+use App\Config\Session\TeacherSession;
 use App\Models\Subject;
+use App\Models\Teacher;
 use App\Utils\Pagination;
 use Error;
 use Psr\Http\Message\ResponseInterface;
@@ -33,6 +35,18 @@ class SubjectController
         'subjects' => $subjects,
         'pages' => $pages
       ]);
+    } else if (TeacherSession::isLogged()) {
+      $subjects = Teacher::getSubjects($user['id']);
+      $total = count($subjects);
+      $pagination = new Pagination(1, $total, $total);
+      $pages = $pagination->getInfo();
+
+      return $view->render($response, 'Subject/list.html', [
+        'user' => $user,
+        'total' => $total,
+        'subjects' => $subjects,
+        'pages' => $pages
+      ]);
     }
 
     return $view->render($response, 'Error/not-found.html', [
@@ -47,7 +61,7 @@ class SubjectController
     $user = Session::getUser();
 
     $subject = Subject::getById($id, ['id', 'title', 'workload', 'passingScore']);
-    if (EmployeeSession::isLogged() && !!$subject) {
+    if ((EmployeeSession::isLogged() || TeacherSession::isLogged()) && !!$subject) {
       return $view->render($response, 'Subject/details.html', [
         'user' => $user,
         'subject' => $subject

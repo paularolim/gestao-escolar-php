@@ -94,7 +94,7 @@ class Teacher extends Person
   public static function getSubjects(string $id): array
   {
     $result = (new Database('teachers'))->custom(
-      'select st.id, s.title, s.workload, st.date, st.active
+      'select s.id, s.title, s.workload, s.passingScore, st.date, st.active
       from subjects_teachers st
       inner join subjects s
       where st.idTeacher = "' . $id . '" and st.idSubject = s.id;'
