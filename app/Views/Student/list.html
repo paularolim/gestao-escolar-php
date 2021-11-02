@@ -27,6 +27,10 @@
     >
   </div>
 </div>
+
+{% if total == 0 %}
+<p>Sem matérias cadastradas</p>
+{% else %}
 <table class="table">
   <thead class="background-primary">
     <tr>
@@ -83,6 +87,7 @@
     {% endif %}
   </ul>
 </nav>
+{% endif %}
 
 <script src="/public/js/format.js"></script>
 <script>

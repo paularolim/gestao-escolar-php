@@ -4,9 +4,11 @@ namespace App\Controllers;
 
 use App\Config\Session\EmployeeSession;
 use App\Config\Session\Session;
+use App\Config\Session\TeacherSession;
 use App\Models\Matriculation;
 use App\Models\SchoolClass;
 use App\Models\Student;
+use App\Models\Teacher;
 use App\Utils\Pagination;
 use Error;
 use Psr\Http\Message\ResponseInterface;
@@ -20,6 +22,7 @@ class StudentController
     $page = $request->getQueryParams()['page'] ?? 1;
     $size = $request->getQueryParams()['size'] ?? 20;
     $view = Twig::fromRequest($request);
+    $user = Session::getUser();
 
     if (EmployeeSession::isLogged()) {
       $total = Student::getCount();
@@ -28,7 +31,19 @@ class StudentController
       $students = Student::getAll(['id', 'name', 'document', 'active', 'matriculation'], null, 'name ASC', $pagination->limit());
 
       return $view->render($response, 'Student/list.html', [
-        'user' => Session::getUser(),
+        'user' => $user,
+        'students' => $students,
+        'total' => $total,
+        'pages' => $pages
+      ]);
+    } else if (TeacherSession::isLogged()) {
+      $students = Teacher::getStudents($user['id']);
+      $total = count($students);
+      $pagination = new Pagination(1, $total, $total);
+      $pages = $pagination->getInfo();
+
+      return $view->render($response, 'Student/list.html', [
+        'user' => $user,
         'students' => $students,
         'total' => $total,
         'pages' => $pages
@@ -36,7 +51,7 @@ class StudentController
     }
 
     return $view->render($response, 'Error/not-found.html', [
-      'user' => Session::getUser()
+      'user' => $user
     ]);
   }
 
@@ -47,7 +62,7 @@ class StudentController
     $user = Session::getUser();
 
     $student = Student::getById($id, ['id', 'name', 'document', 'phone', 'email', 'dateOfBirth', 'active', 'matriculation']);
-    if (EmployeeSession::isLogged() && !!$student) {
+    if ((EmployeeSession::isLogged() || TeacherSession::isLogged()) && !!$student) {
       $schoolClassesAvailable = SchoolClass::getAll(['*']);
       $schoolClasses = Student::getSchoolClasses($id);
 

@@ -102,4 +102,23 @@ class Teacher extends Person
 
     return $result ? $result : [];
   }
+
+  public static function getStudents(string $id): array
+  {
+    $result = (new Database(''))->custom('
+      select st.id, st.name, st.document, st.active
+      from students st
+      inner join matriculations m, schedules sch, teachers t, schoolClasses scl
+      where
+      st.id = m.idStudent and
+      sch.idSchoolClass = m.idSchoolClass and
+      sch.idTeacher = t.id and
+      scl.id = sch.idSchoolClass and
+      scl.year = ' . (int)date('Y') . ' and
+      t.id = "' . $id . '"
+      group by st.id
+    ')->fetchAll(PDO::FETCH_ASSOC);
+
+    return $result ? $result : [];
+  }
 }
