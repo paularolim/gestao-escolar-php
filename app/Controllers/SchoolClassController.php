@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Config\Session\EmployeeSession;
 use App\Config\Session\Session;
+use App\Config\Session\TeacherSession;
 use App\Models\Employee;
 use App\Models\Schedule;
 use App\Models\SchoolClass;
@@ -22,6 +23,7 @@ class SchoolClassController
     $page = $request->getQueryParams()['page'] ?? 1;
     $size = $request->getQueryParams()['size'] ?? 20;
     $view = Twig::fromRequest($request);
+    $user = Session::getUser();
 
     if (EmployeeSession::isLogged()) {
       $total = SchoolClass::getAll(['count(*) as total'])[0]['total'];
@@ -30,7 +32,19 @@ class SchoolClassController
       $schoolClasses = SchoolClass::getAll();
 
       return $view->render($response, 'SchoolClass/list.html', [
-        'user' => Session::getUser(),
+        'user' => $user,
+        'schoolClasses' => $schoolClasses,
+        'total' => $total,
+        'pages' => $pages
+      ]);
+    } else if (TeacherSession::isLogged()) {
+      $schoolClasses = Teacher::getSchoolClasses($user['id']);
+      $total = count($schoolClasses);
+      $pagination = new Pagination(1, $total, $total);
+      $pages = $pagination->getInfo();
+
+      return $view->render($response, 'SchoolClass/list.html', [
+        'user' => $user,
         'schoolClasses' => $schoolClasses,
         'total' => $total,
         'pages' => $pages
@@ -49,7 +63,7 @@ class SchoolClassController
     $user = Session::getUser();
 
     $schoolClass = SchoolClass::getById($id, ['*']);
-    if (EmployeeSession::isLogged() && !!$schoolClass) {
+    if ((EmployeeSession::isLogged() || TeacherSession::isLogged()) && !!$schoolClass) {
       $students = SchoolClass::getStudents($id);
       $total = count($students);
       $schedules = SchoolClass::getSchedules($id);

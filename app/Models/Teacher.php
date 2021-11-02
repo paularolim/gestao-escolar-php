@@ -121,4 +121,21 @@ class Teacher extends Person
 
     return $result ? $result : [];
   }
+
+  public static function getSchoolClasses(string $id): array
+  {
+    $result = (new Database(''))->custom('
+      select scl.id, scl.identifier, scl.year
+      from schoolClasses scl
+      inner join teachers t, schedules sch
+      where
+      t.id = "' . $id . '" and
+      scl.id = sch.idSchoolClass and
+      sch.idTeacher = t.id
+      group by scl.id
+      order by scl.year desc
+    ')->fetchAll(PDO::FETCH_ASSOC);
+
+    return $result ? $result : [];
+  }
 }

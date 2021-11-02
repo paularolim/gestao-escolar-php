@@ -5,7 +5,9 @@
   </div>
   <div class="col-6 d-flex justify-content-end">
     <!-- TODO: implement edit -->
+    {% if user.type == 'employee' %}
     <a type="button" class="btn btn-primary">Editar</a>
+    {% endif %}
   </div>
 </div>
 
@@ -29,11 +31,13 @@
         <div class="row">
           <div class="col-6">Horários</div>
           <div class="col-6 d-flex justify-content-end">
+            {% if user.type == 'employee' %}
             <a
               href="/turmas/{{schoolClass.id}}/horarios/adicionar"
               class="btn btn-primary"
               >Adicionar</a
             >
+            {% endif %}
           </div>
         </div>
       </div>
@@ -99,9 +103,11 @@
               <span id="teacherDetails">Astolfo</span>
             </p>
             <!-- TODO: implement edit schedule -->
+            {% if user.type == 'employee' %}
             <a href="" class="btn btn-outline-primary" id="btnEditSchedule">
               Editar
             </a>
+            {% endif %}
             <a href="" class="btn btn-outline-primary" onclick="closePopup()">
               Fechar
             </a>
@@ -127,10 +133,11 @@
           </li>
           {% endfor %}
         </ul>
+        {% if user.type == 'employee' %}
         <p class="mt-4">
           Obs: A edição das matrículas devem ser feitas no perfil do aluno.
         </p>
-        {% else %}
+        {% endif %} {% else %}
         <p>Não há alunos na turma.</p>
         {% endif %}
       </div>
@@ -157,9 +164,12 @@
 
         document.getElementById("subjectDetails").innerHTML = subject;
         document.getElementById("teacherDetails").innerHTML = teacher;
-        document.getElementById(
-          "btnEditSchedule"
-        ).href = `/turmas/${idSchoolClass.trim()}/horarios/${id.trim()}/editar`;
+
+        if (document.getElementById("btnEditSchedule")) {
+          document.getElementById(
+            "btnEditSchedule"
+          ).href = `/turmas/${idSchoolClass.trim()}/horarios/${id.trim()}/editar`;
+        }
         panel.classList.remove("d-none");
       });
     }
